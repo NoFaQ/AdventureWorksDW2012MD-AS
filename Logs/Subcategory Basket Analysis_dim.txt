@@ -1,0 +1,1769 @@
+<Batch xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Parallel>
+    <Process xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500">
+      <Object>
+        <DatabaseID>AdventureWorksDW2012MD-AS</DatabaseID>
+        <DimensionID>Subcategory Basket Analysis</DimensionID>
+      </Object>
+      <Type>ProcessDefault</Type>
+      <WriteBackTableCreation>UseExisting</WriteBackTableCreation>
+    </Process>
+  </Parallel>
+</Batch>
+	Processing Cube 'Adventure Works' completed.
+		Start time: 10/06/2018 7:39:24 PM; End time: 10/06/2018 7:40:10 PM; Duration: 0:00:45
+		Processing Measure Group 'Exchange Rates' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:41 PM; Duration: 0:00:10
+			Processing Partition 'Currency_Rates' completed. 14264 rows have been read.
+				Start time: 10/06/2018 7:39:31 PM; End time: 10/06/2018 7:39:37 PM; Duration: 0:00:06
+				SQL queries 1
+					SELECT [dbo_FactCurrencyRate].[AverageRate] AS [dbo_FactCurrencyRateAverageRate0_0],[dbo_FactCurrencyRate].[EndOfDayRate] AS [dbo_FactCurrencyRateEndOfDayRate0_1],[dbo_FactCurrencyRate].[CurrencyKey] AS [dbo_FactCurrencyRateCurrencyKey0_2],[dbo_FactCurrencyRate].[DateKey] AS [dbo_FactCurrencyRateDateKey0_3]
+FROM 
+(
+
+SELECT     CurrencyKey, DateKey, AverageRate, EndOfDayRate
+FROM         dbo.FactCurrencyRate
+)
+ AS [dbo_FactCurrencyRate]
+		Processing Measure Group 'Financial Reporting' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:43 PM; Duration: 0:00:13
+			Processing Partition 'Finance' completed. 39409 rows have been read.
+				Start time: 10/06/2018 7:39:31 PM; End time: 10/06/2018 7:39:41 PM; Duration: 0:00:10
+				SQL queries 1
+					SELECT [dbo_FactFinance].[Amount] AS [dbo_FactFinanceAmount0_0],[dbo_FactFinance].[ScenarioKey] AS [dbo_FactFinanceScenarioKey0_1],[dbo_FactFinance].[OrganizationKey] AS [dbo_FactFinanceOrganizationKey0_2],[dbo_FactFinance].[DepartmentGroupKey] AS [dbo_FactFinanceDepartmentGroupKey0_3],[dbo_FactFinance].[AccountKey] AS [dbo_FactFinanceAccountKey0_4],[dbo_FactFinance].[DateKey] AS [dbo_FactFinanceDateKey0_5],[dbo_DimOrganization_16].[CurrencyKey] AS [dbo_DimOrganizationCurrencyKey2_0]
+FROM [dbo].[FactFinance] AS [dbo_FactFinance],
+(
+
+SELECT     o.OrganizationKey, o.ParentOrganizationKey, o.PercentageOfOwnership, o.OrganizationName, o.CurrencyKey, c.CurrencyAlternateKey
+FROM         DimOrganization AS o INNER JOIN
+                      DimCurrency AS c ON o.CurrencyKey = c.CurrencyKey
+)
+ AS [dbo_DimOrganization_16]
+WHERE 
+(
+
+(
+[dbo_FactFinance].[OrganizationKey] = [dbo_DimOrganization_16].[OrganizationKey]
+)
+
+)
+		Processing Measure Group 'Internet Customers' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:47 PM; Duration: 0:00:17
+			Processing Partition 'Customers_2005' completed.
+				Start time: 10/06/2018 7:39:40 PM; End time: 10/06/2018 7:39:47 PM; Duration: 0:00:06
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_0],[dbo_FactInternetSales].[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_1],[dbo_FactInternetSales].[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_2],[dbo_FactInternetSales].[ProductKey] AS [dbo_FactInternetSalesProductKey0_3],[dbo_FactInternetSales].[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_4],[dbo_FactInternetSales].[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_5],[dbo_FactInternetSales].[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_6],[dbo_FactInternetSales].[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_7]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+ WHERE OrderDateKey <= '20051231'
+)
+ AS [dbo_FactInternetSales]
+ORDER BY [dbo_FactInternetSales].[CustomerKey]
+ASC
+			Processing Partition 'Customers_2006' completed.
+				Start time: 10/06/2018 7:39:31 PM; End time: 10/06/2018 7:39:41 PM; Duration: 0:00:09
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_0],[dbo_FactInternetSales].[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_1],[dbo_FactInternetSales].[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_2],[dbo_FactInternetSales].[ProductKey] AS [dbo_FactInternetSalesProductKey0_3],[dbo_FactInternetSales].[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_4],[dbo_FactInternetSales].[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_5],[dbo_FactInternetSales].[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_6],[dbo_FactInternetSales].[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_7]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+ WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+)
+ AS [dbo_FactInternetSales]
+ORDER BY [dbo_FactInternetSales].[CustomerKey]
+ASC
+			Processing Partition 'Customers_2007' completed.
+				Start time: 10/06/2018 7:39:32 PM; End time: 10/06/2018 7:39:44 PM; Duration: 0:00:11
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_0],[dbo_FactInternetSales].[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_1],[dbo_FactInternetSales].[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_2],[dbo_FactInternetSales].[ProductKey] AS [dbo_FactInternetSalesProductKey0_3],[dbo_FactInternetSales].[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_4],[dbo_FactInternetSales].[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_5],[dbo_FactInternetSales].[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_6],[dbo_FactInternetSales].[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_7]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+ WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+)
+ AS [dbo_FactInternetSales]
+ORDER BY [dbo_FactInternetSales].[CustomerKey]
+ASC
+			Processing Partition 'Customers_2008' completed.
+				Start time: 10/06/2018 7:39:34 PM; End time: 10/06/2018 7:39:44 PM; Duration: 0:00:10
+				SQL queries 
+					SELECT [dbo_FactInternetSales].[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_0],[dbo_FactInternetSales].[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_1],[dbo_FactInternetSales].[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_2],[dbo_FactInternetSales].[ProductKey] AS [dbo_FactInternetSalesProductKey0_3],[dbo_FactInternetSales].[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_4],[dbo_FactInternetSales].[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_5],[dbo_FactInternetSales].[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_6],[dbo_FactInternetSales].[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_7]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+ WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+)
+ AS [dbo_FactInternetSales]
+ORDER BY [dbo_FactInternetSales].[CustomerKey]
+ASC
+		Processing Measure Group 'Internet Orders' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:46 PM; Duration: 0:00:16
+			Processing Partition 'Internet_Orders_2005' completed.
+				Start time: 10/06/2018 7:39:32 PM; End time: 10/06/2018 7:39:44 PM; Duration: 0:00:11
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[SalesOrderNumber] AS [dbo_FactInternetSalesSalesOrderNumber0_0],[dbo_FactInternetSales].[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_1],[dbo_FactInternetSales].[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_2],[dbo_FactInternetSales].[ProductKey] AS [dbo_FactInternetSalesProductKey0_3],[dbo_FactInternetSales].[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_4],[dbo_FactInternetSales].[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_5],[dbo_FactInternetSales].[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_6],[dbo_FactInternetSales].[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_7],[dbo_FactInternetSales].[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_8]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+ WHERE OrderDateKey <= '20051231'
+)
+ AS [dbo_FactInternetSales]
+ORDER BY [dbo_FactInternetSales].[SalesOrderNumber]
+ASC
+			Processing Partition 'Internet_Orders_2006' completed.
+				Start time: 10/06/2018 7:39:31 PM; End time: 10/06/2018 7:39:41 PM; Duration: 0:00:09
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[SalesOrderNumber] AS [dbo_FactInternetSalesSalesOrderNumber0_0],[dbo_FactInternetSales].[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_1],[dbo_FactInternetSales].[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_2],[dbo_FactInternetSales].[ProductKey] AS [dbo_FactInternetSalesProductKey0_3],[dbo_FactInternetSales].[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_4],[dbo_FactInternetSales].[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_5],[dbo_FactInternetSales].[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_6],[dbo_FactInternetSales].[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_7],[dbo_FactInternetSales].[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_8]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+ WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+)
+ AS [dbo_FactInternetSales]
+ORDER BY [dbo_FactInternetSales].[SalesOrderNumber]
+ASC
+			Processing Partition 'Internet_Orders_2007' completed.
+				Start time: 10/06/2018 7:39:34 PM; End time: 10/06/2018 7:39:44 PM; Duration: 0:00:10
+				SQL queries 
+					SELECT [dbo_FactInternetSales].[SalesOrderNumber] AS [dbo_FactInternetSalesSalesOrderNumber0_0],[dbo_FactInternetSales].[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_1],[dbo_FactInternetSales].[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_2],[dbo_FactInternetSales].[ProductKey] AS [dbo_FactInternetSalesProductKey0_3],[dbo_FactInternetSales].[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_4],[dbo_FactInternetSales].[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_5],[dbo_FactInternetSales].[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_6],[dbo_FactInternetSales].[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_7],[dbo_FactInternetSales].[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_8]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+ WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+)
+ AS [dbo_FactInternetSales]
+ORDER BY [dbo_FactInternetSales].[SalesOrderNumber]
+ASC
+			Processing Partition 'Internet_Orders_2008' completed.
+				Start time: 10/06/2018 7:39:39 PM; End time: 10/06/2018 7:39:46 PM; Duration: 0:00:07
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[SalesOrderNumber] AS [dbo_FactInternetSalesSalesOrderNumber0_0],[dbo_FactInternetSales].[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_1],[dbo_FactInternetSales].[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_2],[dbo_FactInternetSales].[ProductKey] AS [dbo_FactInternetSalesProductKey0_3],[dbo_FactInternetSales].[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_4],[dbo_FactInternetSales].[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_5],[dbo_FactInternetSales].[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_6],[dbo_FactInternetSales].[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_7],[dbo_FactInternetSales].[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_8]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+ WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+)
+ AS [dbo_FactInternetSales]
+ORDER BY [dbo_FactInternetSales].[SalesOrderNumber]
+ASC
+		Processing Measure Group 'Internet Sales' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:48 PM; Duration: 0:00:18
+			Processing Partition 'Internet_Sales_2005' completed.
+				Start time: 10/06/2018 7:39:35 PM; End time: 10/06/2018 7:39:48 PM; Duration: 0:00:13
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[dbo_FactInternetSalesSalesAmount0_0] AS [dbo_FactInternetSalesSalesAmount0_0],[dbo_FactInternetSales].[dbo_FactInternetSalesOrderQuantity0_1] AS [dbo_FactInternetSalesOrderQuantity0_1],[dbo_FactInternetSales].[dbo_FactInternetSalesExtendedAmount0_2] AS [dbo_FactInternetSalesExtendedAmount0_2],[dbo_FactInternetSales].[dbo_FactInternetSalesTaxAmt0_3] AS [dbo_FactInternetSalesTaxAmt0_3],[dbo_FactInternetSales].[dbo_FactInternetSalesFreight0_4] AS [dbo_FactInternetSalesFreight0_4],[dbo_FactInternetSales].[dbo_FactInternetSalesUnitPrice0_5] AS [dbo_FactInternetSalesUnitPrice0_5],[dbo_FactInternetSales].[dbo_FactInternetSalesTotalProductCost0_6] AS [dbo_FactInternetSalesTotalProductCost0_6],[dbo_FactInternetSales].[dbo_FactInternetSalesProductStandardCost0_7] AS [dbo_FactInternetSalesProductStandardCost0_7],[dbo_FactInternetSales].[dbo_FactInternetSales0_8] AS [dbo_FactInternetSales0_8],[dbo_FactInternetSales].[dbo_FactInternetSalesPromotionKey0_9] AS [dbo_FactInternetSalesPromotionKey0_9],[dbo_FactInternetSales].[dbo_FactInternetSalesSalesTerritoryKey0_10] AS [dbo_FactInternetSalesSalesTerritoryKey0_10],[dbo_FactInternetSales].[dbo_FactInternetSalesProductKey0_11] AS [dbo_FactInternetSalesProductKey0_11],[dbo_FactInternetSales].[dbo_FactInternetSalesCustomerKey0_12] AS [dbo_FactInternetSalesCustomerKey0_12],[dbo_FactInternetSales].[dbo_FactInternetSalesCurrencyKey0_13] AS [dbo_FactInternetSalesCurrencyKey0_13],[dbo_FactInternetSales].[dbo_FactInternetSalesOrderDateKey0_14] AS [dbo_FactInternetSalesOrderDateKey0_14],[dbo_FactInternetSales].[dbo_FactInternetSalesShipDateKey0_15] AS [dbo_FactInternetSalesShipDateKey0_15],[dbo_FactInternetSales].[dbo_FactInternetSalesDueDateKey0_16] AS [dbo_FactInternetSalesDueDateKey0_16]
+FROM 
+(
+
+SELECT [SalesAmount] AS [dbo_FactInternetSalesSalesAmount0_0],[OrderQuantity] AS [dbo_FactInternetSalesOrderQuantity0_1],[ExtendedAmount] AS [dbo_FactInternetSalesExtendedAmount0_2],[TaxAmt] AS [dbo_FactInternetSalesTaxAmt0_3],[Freight] AS [dbo_FactInternetSalesFreight0_4],[UnitPrice] AS [dbo_FactInternetSalesUnitPrice0_5],[TotalProductCost] AS [dbo_FactInternetSalesTotalProductCost0_6],[ProductStandardCost] AS [dbo_FactInternetSalesProductStandardCost0_7],1   AS [dbo_FactInternetSales0_8],[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_9],[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_10],[ProductKey] AS [dbo_FactInternetSalesProductKey0_11],[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_12],[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_13],[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_14],[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_15],[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_16]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+  FROM [dbo].[FactInternetSales]
+                                WHERE OrderDateKey <= '20051231'
+)
+ AS [FactInternetSales]
+)
+ AS [dbo_FactInternetSales]
+			Processing Partition 'Internet_Sales_2006' completed.
+				Start time: 10/06/2018 7:39:33 PM; End time: 10/06/2018 7:39:41 PM; Duration: 0:00:07
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[dbo_FactInternetSalesSalesAmount0_0] AS [dbo_FactInternetSalesSalesAmount0_0],[dbo_FactInternetSales].[dbo_FactInternetSalesOrderQuantity0_1] AS [dbo_FactInternetSalesOrderQuantity0_1],[dbo_FactInternetSales].[dbo_FactInternetSalesExtendedAmount0_2] AS [dbo_FactInternetSalesExtendedAmount0_2],[dbo_FactInternetSales].[dbo_FactInternetSalesTaxAmt0_3] AS [dbo_FactInternetSalesTaxAmt0_3],[dbo_FactInternetSales].[dbo_FactInternetSalesFreight0_4] AS [dbo_FactInternetSalesFreight0_4],[dbo_FactInternetSales].[dbo_FactInternetSalesUnitPrice0_5] AS [dbo_FactInternetSalesUnitPrice0_5],[dbo_FactInternetSales].[dbo_FactInternetSalesTotalProductCost0_6] AS [dbo_FactInternetSalesTotalProductCost0_6],[dbo_FactInternetSales].[dbo_FactInternetSalesProductStandardCost0_7] AS [dbo_FactInternetSalesProductStandardCost0_7],[dbo_FactInternetSales].[dbo_FactInternetSales0_8] AS [dbo_FactInternetSales0_8],[dbo_FactInternetSales].[dbo_FactInternetSalesPromotionKey0_9] AS [dbo_FactInternetSalesPromotionKey0_9],[dbo_FactInternetSales].[dbo_FactInternetSalesSalesTerritoryKey0_10] AS [dbo_FactInternetSalesSalesTerritoryKey0_10],[dbo_FactInternetSales].[dbo_FactInternetSalesProductKey0_11] AS [dbo_FactInternetSalesProductKey0_11],[dbo_FactInternetSales].[dbo_FactInternetSalesCustomerKey0_12] AS [dbo_FactInternetSalesCustomerKey0_12],[dbo_FactInternetSales].[dbo_FactInternetSalesCurrencyKey0_13] AS [dbo_FactInternetSalesCurrencyKey0_13],[dbo_FactInternetSales].[dbo_FactInternetSalesOrderDateKey0_14] AS [dbo_FactInternetSalesOrderDateKey0_14],[dbo_FactInternetSales].[dbo_FactInternetSalesShipDateKey0_15] AS [dbo_FactInternetSalesShipDateKey0_15],[dbo_FactInternetSales].[dbo_FactInternetSalesDueDateKey0_16] AS [dbo_FactInternetSalesDueDateKey0_16]
+FROM 
+(
+
+SELECT [SalesAmount] AS [dbo_FactInternetSalesSalesAmount0_0],[OrderQuantity] AS [dbo_FactInternetSalesOrderQuantity0_1],[ExtendedAmount] AS [dbo_FactInternetSalesExtendedAmount0_2],[TaxAmt] AS [dbo_FactInternetSalesTaxAmt0_3],[Freight] AS [dbo_FactInternetSalesFreight0_4],[UnitPrice] AS [dbo_FactInternetSalesUnitPrice0_5],[TotalProductCost] AS [dbo_FactInternetSalesTotalProductCost0_6],[ProductStandardCost] AS [dbo_FactInternetSalesProductStandardCost0_7],1   AS [dbo_FactInternetSales0_8],[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_9],[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_10],[ProductKey] AS [dbo_FactInternetSalesProductKey0_11],[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_12],[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_13],[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_14],[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_15],[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_16]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+               WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+)
+ AS [FactInternetSales]
+)
+ AS [dbo_FactInternetSales]
+			Processing Partition 'Internet_Sales_2007' completed.
+				Start time: 10/06/2018 7:39:34 PM; End time: 10/06/2018 7:39:45 PM; Duration: 0:00:10
+				SQL queries 
+					SELECT [dbo_FactInternetSales].[dbo_FactInternetSalesSalesAmount0_0] AS [dbo_FactInternetSalesSalesAmount0_0],[dbo_FactInternetSales].[dbo_FactInternetSalesOrderQuantity0_1] AS [dbo_FactInternetSalesOrderQuantity0_1],[dbo_FactInternetSales].[dbo_FactInternetSalesExtendedAmount0_2] AS [dbo_FactInternetSalesExtendedAmount0_2],[dbo_FactInternetSales].[dbo_FactInternetSalesTaxAmt0_3] AS [dbo_FactInternetSalesTaxAmt0_3],[dbo_FactInternetSales].[dbo_FactInternetSalesFreight0_4] AS [dbo_FactInternetSalesFreight0_4],[dbo_FactInternetSales].[dbo_FactInternetSalesUnitPrice0_5] AS [dbo_FactInternetSalesUnitPrice0_5],[dbo_FactInternetSales].[dbo_FactInternetSalesTotalProductCost0_6] AS [dbo_FactInternetSalesTotalProductCost0_6],[dbo_FactInternetSales].[dbo_FactInternetSalesProductStandardCost0_7] AS [dbo_FactInternetSalesProductStandardCost0_7],[dbo_FactInternetSales].[dbo_FactInternetSales0_8] AS [dbo_FactInternetSales0_8],[dbo_FactInternetSales].[dbo_FactInternetSalesPromotionKey0_9] AS [dbo_FactInternetSalesPromotionKey0_9],[dbo_FactInternetSales].[dbo_FactInternetSalesSalesTerritoryKey0_10] AS [dbo_FactInternetSalesSalesTerritoryKey0_10],[dbo_FactInternetSales].[dbo_FactInternetSalesProductKey0_11] AS [dbo_FactInternetSalesProductKey0_11],[dbo_FactInternetSales].[dbo_FactInternetSalesCustomerKey0_12] AS [dbo_FactInternetSalesCustomerKey0_12],[dbo_FactInternetSales].[dbo_FactInternetSalesCurrencyKey0_13] AS [dbo_FactInternetSalesCurrencyKey0_13],[dbo_FactInternetSales].[dbo_FactInternetSalesOrderDateKey0_14] AS [dbo_FactInternetSalesOrderDateKey0_14],[dbo_FactInternetSales].[dbo_FactInternetSalesShipDateKey0_15] AS [dbo_FactInternetSalesShipDateKey0_15],[dbo_FactInternetSales].[dbo_FactInternetSalesDueDateKey0_16] AS [dbo_FactInternetSalesDueDateKey0_16]
+FROM 
+(
+
+SELECT [SalesAmount] AS [dbo_FactInternetSalesSalesAmount0_0],[OrderQuantity] AS [dbo_FactInternetSalesOrderQuantity0_1],[ExtendedAmount] AS [dbo_FactInternetSalesExtendedAmount0_2],[TaxAmt] AS [dbo_FactInternetSalesTaxAmt0_3],[Freight] AS [dbo_FactInternetSalesFreight0_4],[UnitPrice] AS [dbo_FactInternetSalesUnitPrice0_5],[TotalProductCost] AS [dbo_FactInternetSalesTotalProductCost0_6],[ProductStandardCost] AS [dbo_FactInternetSalesProductStandardCost0_7],1   AS [dbo_FactInternetSales0_8],[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_9],[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_10],[ProductKey] AS [dbo_FactInternetSalesProductKey0_11],[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_12],[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_13],[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_14],[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_15],[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_16]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+             WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+)
+ AS [FactInternetSales]
+)
+ AS [dbo_FactInternetSales]
+			Processing Partition 'Internet_Sales_2008' completed.
+				Start time: 10/06/2018 7:39:31 PM; End time: 10/06/2018 7:39:41 PM; Duration: 0:00:09
+				SQL queries 1
+					SELECT [dbo_FactInternetSales].[dbo_FactInternetSalesSalesAmount0_0] AS [dbo_FactInternetSalesSalesAmount0_0],[dbo_FactInternetSales].[dbo_FactInternetSalesOrderQuantity0_1] AS [dbo_FactInternetSalesOrderQuantity0_1],[dbo_FactInternetSales].[dbo_FactInternetSalesExtendedAmount0_2] AS [dbo_FactInternetSalesExtendedAmount0_2],[dbo_FactInternetSales].[dbo_FactInternetSalesTaxAmt0_3] AS [dbo_FactInternetSalesTaxAmt0_3],[dbo_FactInternetSales].[dbo_FactInternetSalesFreight0_4] AS [dbo_FactInternetSalesFreight0_4],[dbo_FactInternetSales].[dbo_FactInternetSalesUnitPrice0_5] AS [dbo_FactInternetSalesUnitPrice0_5],[dbo_FactInternetSales].[dbo_FactInternetSalesTotalProductCost0_6] AS [dbo_FactInternetSalesTotalProductCost0_6],[dbo_FactInternetSales].[dbo_FactInternetSalesProductStandardCost0_7] AS [dbo_FactInternetSalesProductStandardCost0_7],[dbo_FactInternetSales].[dbo_FactInternetSales0_8] AS [dbo_FactInternetSales0_8],[dbo_FactInternetSales].[dbo_FactInternetSalesPromotionKey0_9] AS [dbo_FactInternetSalesPromotionKey0_9],[dbo_FactInternetSales].[dbo_FactInternetSalesSalesTerritoryKey0_10] AS [dbo_FactInternetSalesSalesTerritoryKey0_10],[dbo_FactInternetSales].[dbo_FactInternetSalesProductKey0_11] AS [dbo_FactInternetSalesProductKey0_11],[dbo_FactInternetSales].[dbo_FactInternetSalesCustomerKey0_12] AS [dbo_FactInternetSalesCustomerKey0_12],[dbo_FactInternetSales].[dbo_FactInternetSalesCurrencyKey0_13] AS [dbo_FactInternetSalesCurrencyKey0_13],[dbo_FactInternetSales].[dbo_FactInternetSalesOrderDateKey0_14] AS [dbo_FactInternetSalesOrderDateKey0_14],[dbo_FactInternetSales].[dbo_FactInternetSalesShipDateKey0_15] AS [dbo_FactInternetSalesShipDateKey0_15],[dbo_FactInternetSales].[dbo_FactInternetSalesDueDateKey0_16] AS [dbo_FactInternetSalesDueDateKey0_16]
+FROM 
+(
+
+SELECT [SalesAmount] AS [dbo_FactInternetSalesSalesAmount0_0],[OrderQuantity] AS [dbo_FactInternetSalesOrderQuantity0_1],[ExtendedAmount] AS [dbo_FactInternetSalesExtendedAmount0_2],[TaxAmt] AS [dbo_FactInternetSalesTaxAmt0_3],[Freight] AS [dbo_FactInternetSalesFreight0_4],[UnitPrice] AS [dbo_FactInternetSalesUnitPrice0_5],[TotalProductCost] AS [dbo_FactInternetSalesTotalProductCost0_6],[ProductStandardCost] AS [dbo_FactInternetSalesProductStandardCost0_7],1   AS [dbo_FactInternetSales0_8],[PromotionKey] AS [dbo_FactInternetSalesPromotionKey0_9],[SalesTerritoryKey] AS [dbo_FactInternetSalesSalesTerritoryKey0_10],[ProductKey] AS [dbo_FactInternetSalesProductKey0_11],[CustomerKey] AS [dbo_FactInternetSalesCustomerKey0_12],[CurrencyKey] AS [dbo_FactInternetSalesCurrencyKey0_13],[OrderDateKey] AS [dbo_FactInternetSalesOrderDateKey0_14],[ShipDateKey] AS [dbo_FactInternetSalesShipDateKey0_15],[DueDateKey] AS [dbo_FactInternetSalesDueDateKey0_16]
+FROM 
+(
+
+SELECT [dbo].[FactInternetSales].[ProductKey],[dbo].[FactInternetSales].[OrderDateKey],[dbo].[FactInternetSales].[DueDateKey],[dbo].[FactInternetSales].[ShipDateKey], [dbo].[FactInternetSales].[CustomerKey], [dbo].[FactInternetSales].[PromotionKey],[dbo].[FactInternetSales].[CurrencyKey],[dbo].[FactInternetSales].[SalesTerritoryKey],[dbo].[FactInternetSales].[SalesOrderNumber],[dbo].[FactInternetSales].[SalesOrderLineNumber],[dbo].[FactInternetSales].[RevisionNumber],[dbo].[FactInternetSales].[OrderQuantity],[dbo].[FactInternetSales].[UnitPrice],[dbo].[FactInternetSales].[ExtendedAmount],[dbo].[FactInternetSales].[UnitPriceDiscountPct],[dbo].[FactInternetSales].[DiscountAmount],[dbo].[FactInternetSales].[ProductStandardCost],[dbo].[FactInternetSales].[TotalProductCost],[dbo].[FactInternetSales].[SalesAmount],[dbo].[FactInternetSales].[TaxAmt],[dbo].[FactInternetSales].[Freight],[dbo].[FactInternetSales].[CarrierTrackingNumber],[dbo].[FactInternetSales].[CustomerPONumber]
+ FROM [dbo].[FactInternetSales]
+              WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+)
+ AS [FactInternetSales]
+)
+ AS [dbo_FactInternetSales]
+		Processing Measure Group 'Reseller Orders' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:48 PM; Duration: 0:00:18
+			Processing Partition 'Reseller_Orders_2005' completed.
+				Start time: 10/06/2018 7:39:34 PM; End time: 10/06/2018 7:39:48 PM; Duration: 0:00:14
+				SQL queries 1
+					SELECT [dbo_FactResellerSales].[SalesOrderNumber] AS [dbo_FactResellerSalesSalesOrderNumber0_0],[dbo_FactResellerSales].[ResellerKey] AS [dbo_FactResellerSalesResellerKey0_1],[dbo_FactResellerSales].[EmployeeKey] AS [dbo_FactResellerSalesEmployeeKey0_2],[dbo_FactResellerSales].[PromotionKey] AS [dbo_FactResellerSalesPromotionKey0_3],[dbo_FactResellerSales].[SalesTerritoryKey] AS [dbo_FactResellerSalesSalesTerritoryKey0_4],[dbo_FactResellerSales].[ProductKey] AS [dbo_FactResellerSalesProductKey0_5],[dbo_FactResellerSales].[CurrencyKey] AS [dbo_FactResellerSalesCurrencyKey0_6],[dbo_FactResellerSales].[OrderDateKey] AS [dbo_FactResellerSalesOrderDateKey0_7],[dbo_FactResellerSales].[ShipDateKey] AS [dbo_FactResellerSalesShipDateKey0_8],[dbo_FactResellerSales].[DueDateKey] AS [dbo_FactResellerSalesDueDateKey0_9],[dbo_DimReseller_6].[GeographyKey] AS [dbo_DimResellerGeographyKey2_0]
+FROM 
+(
+
+SELECT [dbo].[FactResellerSales].[ProductKey],[dbo].[FactResellerSales].[OrderDateKey],[dbo].[FactResellerSales].[DueDateKey],[dbo].[FactResellerSales].[ShipDateKey],[dbo].[FactResellerSales].[ResellerKey], [dbo].[FactResellerSales].[EmployeeKey],[dbo].[FactResellerSales].[PromotionKey],[dbo].[FactResellerSales].[CurrencyKey],[dbo].[FactResellerSales].[SalesTerritoryKey],[dbo].[FactResellerSales].[SalesOrderNumber],[dbo].[FactResellerSales].[SalesOrderLineNumber],[dbo].[FactResellerSales].[RevisionNumber],[dbo].[FactResellerSales].[OrderQuantity],[dbo].[FactResellerSales].[UnitPrice],[dbo].[FactResellerSales].[ExtendedAmount],[dbo].[FactResellerSales].[UnitPriceDiscountPct],[dbo].[FactResellerSales].[DiscountAmount],[dbo].[FactResellerSales].[ProductStandardCost],[dbo].[FactResellerSales].[TotalProductCost],[dbo].[FactResellerSales].[SalesAmount],[dbo].[FactResellerSales].[TaxAmt],[dbo].[FactResellerSales].[Freight],[dbo].[FactResellerSales].[CarrierTrackingNumber],[dbo].[FactResellerSales].[CustomerPONumber]
+ FROM [dbo].[FactResellerSales]
+ WHERE OrderDateKey <= '20051231'
+)
+ AS [dbo_FactResellerSales],[dbo].[DimReseller] AS [dbo_DimReseller_6]
+WHERE 
+(
+
+(
+[dbo_FactResellerSales].[ResellerKey] = [dbo_DimReseller_6].[ResellerKey]
+)
+
+)
+
+ORDER BY [dbo_FactResellerSales].[SalesOrderNumber]
+ASC
+			Processing Partition 'Reseller_Orders_2006' completed.
+				Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:44 PM; Duration: 0:00:13
+				SQL queries 1
+					SELECT [dbo_FactResellerSales].[SalesOrderNumber] AS [dbo_FactResellerSalesSalesOrderNumber0_0],[dbo_FactResellerSales].[ResellerKey] AS [dbo_FactResellerSalesResellerKey0_1],[dbo_FactResellerSales].[EmployeeKey] AS [dbo_FactResellerSalesEmployeeKey0_2],[dbo_FactResellerSales].[PromotionKey] AS [dbo_FactResellerSalesPromotionKey0_3],[dbo_FactResellerSales].[SalesTerritoryKey] AS [dbo_FactResellerSalesSalesTerritoryKey0_4],[dbo_FactResellerSales].[ProductKey] AS [dbo_FactResellerSalesProductKey0_5],[dbo_FactResellerSales].[CurrencyKey] AS [dbo_FactResellerSalesCurrencyKey0_6],[dbo_FactResellerSales].[OrderDateKey] AS [dbo_FactResellerSalesOrderDateKey0_7],[dbo_FactResellerSales].[ShipDateKey] AS [dbo_FactResellerSalesShipDateKey0_8],[dbo_FactResellerSales].[DueDateKey] AS [dbo_FactResellerSalesDueDateKey0_9],[dbo_DimReseller_6].[GeographyKey] AS [dbo_DimResellerGeographyKey2_0]
+FROM 
+(
+
+SELECT [dbo].[FactResellerSales].[ProductKey],[dbo].[FactResellerSales].[OrderDateKey],[dbo].[FactResellerSales].[DueDateKey],[dbo].[FactResellerSales].[ShipDateKey],[dbo].[FactResellerSales].[ResellerKey], [dbo].[FactResellerSales].[EmployeeKey],[dbo].[FactResellerSales].[PromotionKey],[dbo].[FactResellerSales].[CurrencyKey],[dbo].[FactResellerSales].[SalesTerritoryKey],[dbo].[FactResellerSales].[SalesOrderNumber],[dbo].[FactResellerSales].[SalesOrderLineNumber],[dbo].[FactResellerSales].[RevisionNumber],[dbo].[FactResellerSales].[OrderQuantity],[dbo].[FactResellerSales].[UnitPrice],[dbo].[FactResellerSales].[ExtendedAmount],[dbo].[FactResellerSales].[UnitPriceDiscountPct],[dbo].[FactResellerSales].[DiscountAmount],[dbo].[FactResellerSales].[ProductStandardCost],[dbo].[FactResellerSales].[TotalProductCost],[dbo].[FactResellerSales].[SalesAmount],[dbo].[FactResellerSales].[TaxAmt],[dbo].[FactResellerSales].[Freight],[dbo].[FactResellerSales].[CarrierTrackingNumber],[dbo].[FactResellerSales].[CustomerPONumber]
+ FROM [dbo].[FactResellerSales]
+ WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+)
+ AS [dbo_FactResellerSales],[dbo].[DimReseller] AS [dbo_DimReseller_6]
+WHERE 
+(
+
+(
+[dbo_FactResellerSales].[ResellerKey] = [dbo_DimReseller_6].[ResellerKey]
+)
+
+)
+
+ORDER BY [dbo_FactResellerSales].[SalesOrderNumber]
+ASC
+			Processing Partition 'Reseller_Orders_2007' completed.
+				Start time: 10/06/2018 7:39:32 PM; End time: 10/06/2018 7:39:42 PM; Duration: 0:00:09
+				SQL queries 1
+					SELECT [dbo_FactResellerSales].[SalesOrderNumber] AS [dbo_FactResellerSalesSalesOrderNumber0_0],[dbo_FactResellerSales].[ResellerKey] AS [dbo_FactResellerSalesResellerKey0_1],[dbo_FactResellerSales].[EmployeeKey] AS [dbo_FactResellerSalesEmployeeKey0_2],[dbo_FactResellerSales].[PromotionKey] AS [dbo_FactResellerSalesPromotionKey0_3],[dbo_FactResellerSales].[SalesTerritoryKey] AS [dbo_FactResellerSalesSalesTerritoryKey0_4],[dbo_FactResellerSales].[ProductKey] AS [dbo_FactResellerSalesProductKey0_5],[dbo_FactResellerSales].[CurrencyKey] AS [dbo_FactResellerSalesCurrencyKey0_6],[dbo_FactResellerSales].[OrderDateKey] AS [dbo_FactResellerSalesOrderDateKey0_7],[dbo_FactResellerSales].[ShipDateKey] AS [dbo_FactResellerSalesShipDateKey0_8],[dbo_FactResellerSales].[DueDateKey] AS [dbo_FactResellerSalesDueDateKey0_9],[dbo_DimReseller_6].[GeographyKey] AS [dbo_DimResellerGeographyKey2_0]
+FROM 
+(
+
+SELECT [dbo].[FactResellerSales].[ProductKey],[dbo].[FactResellerSales].[OrderDateKey],[dbo].[FactResellerSales].[DueDateKey],[dbo].[FactResellerSales].[ShipDateKey],[dbo].[FactResellerSales].[ResellerKey], [dbo].[FactResellerSales].[EmployeeKey],[dbo].[FactResellerSales].[PromotionKey],[dbo].[FactResellerSales].[CurrencyKey],[dbo].[FactResellerSales].[SalesTerritoryKey],[dbo].[FactResellerSales].[SalesOrderNumber],[dbo].[FactResellerSales].[SalesOrderLineNumber],[dbo].[FactResellerSales].[RevisionNumber],[dbo].[FactResellerSales].[OrderQuantity],[dbo].[FactResellerSales].[UnitPrice],[dbo].[FactResellerSales].[ExtendedAmount],[dbo].[FactResellerSales].[UnitPriceDiscountPct],[dbo].[FactResellerSales].[DiscountAmount],[dbo].[FactResellerSales].[ProductStandardCost],[dbo].[FactResellerSales].[TotalProductCost],[dbo].[FactResellerSales].[SalesAmount],[dbo].[FactResellerSales].[TaxAmt],[dbo].[FactResellerSales].[Freight],[dbo].[FactResellerSales].[CarrierTrackingNumber],[dbo].[FactResellerSales].[CustomerPONumber]
+ FROM [dbo].[FactResellerSales]
+ WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+)
+ AS [dbo_FactResellerSales],[dbo].[DimReseller] AS [dbo_DimReseller_6]
+WHERE 
+(
+
+(
+[dbo_FactResellerSales].[ResellerKey] = [dbo_DimReseller_6].[ResellerKey]
+)
+
+)
+
+ORDER BY [dbo_FactResellerSales].[SalesOrderNumber]
+ASC
+			Processing Partition 'Reseller_Orders_2008' completed.
+				Start time: 10/06/2018 7:39:33 PM; End time: 10/06/2018 7:39:45 PM; Duration: 0:00:11
+				SQL queries 1
+					SELECT [dbo_FactResellerSales].[SalesOrderNumber] AS [dbo_FactResellerSalesSalesOrderNumber0_0],[dbo_FactResellerSales].[ResellerKey] AS [dbo_FactResellerSalesResellerKey0_1],[dbo_FactResellerSales].[EmployeeKey] AS [dbo_FactResellerSalesEmployeeKey0_2],[dbo_FactResellerSales].[PromotionKey] AS [dbo_FactResellerSalesPromotionKey0_3],[dbo_FactResellerSales].[SalesTerritoryKey] AS [dbo_FactResellerSalesSalesTerritoryKey0_4],[dbo_FactResellerSales].[ProductKey] AS [dbo_FactResellerSalesProductKey0_5],[dbo_FactResellerSales].[CurrencyKey] AS [dbo_FactResellerSalesCurrencyKey0_6],[dbo_FactResellerSales].[OrderDateKey] AS [dbo_FactResellerSalesOrderDateKey0_7],[dbo_FactResellerSales].[ShipDateKey] AS [dbo_FactResellerSalesShipDateKey0_8],[dbo_FactResellerSales].[DueDateKey] AS [dbo_FactResellerSalesDueDateKey0_9],[dbo_DimReseller_6].[GeographyKey] AS [dbo_DimResellerGeographyKey2_0]
+FROM 
+(
+
+SELECT [dbo].[FactResellerSales].[ProductKey],[dbo].[FactResellerSales].[OrderDateKey],[dbo].[FactResellerSales].[DueDateKey],[dbo].[FactResellerSales].[ShipDateKey],[dbo].[FactResellerSales].[ResellerKey], [dbo].[FactResellerSales].[EmployeeKey],[dbo].[FactResellerSales].[PromotionKey],[dbo].[FactResellerSales].[CurrencyKey],[dbo].[FactResellerSales].[SalesTerritoryKey],[dbo].[FactResellerSales].[SalesOrderNumber],[dbo].[FactResellerSales].[SalesOrderLineNumber],[dbo].[FactResellerSales].[RevisionNumber],[dbo].[FactResellerSales].[OrderQuantity],[dbo].[FactResellerSales].[UnitPrice],[dbo].[FactResellerSales].[ExtendedAmount],[dbo].[FactResellerSales].[UnitPriceDiscountPct],[dbo].[FactResellerSales].[DiscountAmount],[dbo].[FactResellerSales].[ProductStandardCost],[dbo].[FactResellerSales].[TotalProductCost],[dbo].[FactResellerSales].[SalesAmount],[dbo].[FactResellerSales].[TaxAmt],[dbo].[FactResellerSales].[Freight],[dbo].[FactResellerSales].[CarrierTrackingNumber],[dbo].[FactResellerSales].[CustomerPONumber]
+ FROM [dbo].[FactResellerSales]
+ WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+)
+ AS [dbo_FactResellerSales],[dbo].[DimReseller] AS [dbo_DimReseller_6]
+WHERE 
+(
+
+(
+[dbo_FactResellerSales].[ResellerKey] = [dbo_DimReseller_6].[ResellerKey]
+)
+
+)
+
+ORDER BY [dbo_FactResellerSales].[SalesOrderNumber]
+ASC
+		Processing Measure Group 'Reseller Sales' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:40:03 PM; Duration: 0:00:32
+			Processing Partition 'Reseller_Sales_2005' completed.
+				Start time: 10/06/2018 7:39:33 PM; End time: 10/06/2018 7:39:46 PM; Duration: 0:00:12
+				SQL queries 1
+					SELECT [dbo_FactResellerSales].[dbo_FactResellerSalesSalesAmount0_0] AS [dbo_FactResellerSalesSalesAmount0_0],[dbo_FactResellerSales].[dbo_FactResellerSalesOrderQuantity0_1] AS [dbo_FactResellerSalesOrderQuantity0_1],[dbo_FactResellerSales].[dbo_FactResellerSalesExtendedAmount0_2] AS [dbo_FactResellerSalesExtendedAmount0_2],[dbo_FactResellerSales].[dbo_FactResellerSalesTaxAmt0_3] AS [dbo_FactResellerSalesTaxAmt0_3],[dbo_FactResellerSales].[dbo_FactResellerSalesFreight0_4] AS [dbo_FactResellerSalesFreight0_4],[dbo_FactResellerSales].[dbo_FactResellerSalesDiscountAmount0_5] AS [dbo_FactResellerSalesDiscountAmount0_5],[dbo_FactResellerSales].[dbo_FactResellerSalesUnitPrice0_6] AS [dbo_FactResellerSalesUnitPrice0_6],[dbo_FactResellerSales].[dbo_FactResellerSalesUnitPriceDiscountPct0_7] AS [dbo_FactResellerSalesUnitPriceDiscountPct0_7],[dbo_FactResellerSales].[dbo_FactResellerSalesTotalProductCost0_8] AS [dbo_FactResellerSalesTotalProductCost0_8],[dbo_FactResellerSales].[dbo_FactResellerSalesProductStandardCost0_9] AS [dbo_FactResellerSalesProductStandardCost0_9],[dbo_FactResellerSales].[dbo_FactResellerSales0_10] AS [dbo_FactResellerSales0_10],[dbo_FactResellerSales].[dbo_FactResellerSalesEmployeeKey0_11] AS [dbo_FactResellerSalesEmployeeKey0_11],[dbo_FactResellerSales].[dbo_FactResellerSalesPromotionKey0_12] AS [dbo_FactResellerSalesPromotionKey0_12],[dbo_FactResellerSales].[dbo_FactResellerSalesSalesTerritoryKey0_13] AS [dbo_FactResellerSalesSalesTerritoryKey0_13],[dbo_FactResellerSales].[dbo_FactResellerSalesResellerKey0_14] AS [dbo_FactResellerSalesResellerKey0_14],[dbo_FactResellerSales].[dbo_FactResellerSalesProductKey0_15] AS [dbo_FactResellerSalesProductKey0_15],[dbo_FactResellerSales].[dbo_FactResellerSalesCurrencyKey0_16] AS [dbo_FactResellerSalesCurrencyKey0_16],[dbo_FactResellerSales].[dbo_FactResellerSalesOrderDateKey0_17] AS [dbo_FactResellerSalesOrderDateKey0_17],[dbo_FactResellerSales].[dbo_FactResellerSalesShipDateKey0_18] AS [dbo_FactResellerSalesShipDateKey0_18],[dbo_FactResellerSales].[dbo_FactResellerSalesDueDateKey0_19] AS [dbo_FactResellerSalesDueDateKey0_19],[dbo_DimReseller_6].[GeographyKey] AS [dbo_DimResellerGeographyKey2_0]
+FROM 
+(
+
+SELECT [SalesAmount] AS [dbo_FactResellerSalesSalesAmount0_0],[OrderQuantity] AS [dbo_FactResellerSalesOrderQuantity0_1],[ExtendedAmount] AS [dbo_FactResellerSalesExtendedAmount0_2],[TaxAmt] AS [dbo_FactResellerSalesTaxAmt0_3],[Freight] AS [dbo_FactResellerSalesFreight0_4],[DiscountAmount] AS [dbo_FactResellerSalesDiscountAmount0_5],[UnitPrice] AS [dbo_FactResellerSalesUnitPrice0_6],[UnitPriceDiscountPct] AS [dbo_FactResellerSalesUnitPriceDiscountPct0_7],[TotalProductCost] AS [dbo_FactResellerSalesTotalProductCost0_8],[ProductStandardCost] AS [dbo_FactResellerSalesProductStandardCost0_9],1   AS [dbo_FactResellerSales0_10],[EmployeeKey] AS [dbo_FactResellerSalesEmployeeKey0_11],[PromotionKey] AS [dbo_FactResellerSalesPromotionKey0_12],[SalesTerritoryKey] AS [dbo_FactResellerSalesSalesTerritoryKey0_13],[ResellerKey] AS [dbo_FactResellerSalesResellerKey0_14],[ProductKey] AS [dbo_FactResellerSalesProductKey0_15],[CurrencyKey] AS [dbo_FactResellerSalesCurrencyKey0_16],[OrderDateKey] AS [dbo_FactResellerSalesOrderDateKey0_17],[ShipDateKey] AS [dbo_FactResellerSalesShipDateKey0_18],[DueDateKey] AS [dbo_FactResellerSalesDueDateKey0_19]
+FROM 
+(
+
+SELECT [dbo].[FactResellerSales].[ProductKey],[dbo].[FactResellerSales].[OrderDateKey],[dbo].[FactResellerSales].[DueDateKey],[dbo].[FactResellerSales].[ShipDateKey],[dbo].[FactResellerSales].[ResellerKey], [dbo].[FactResellerSales].[EmployeeKey],[dbo].[FactResellerSales].[PromotionKey],[dbo].[FactResellerSales].[CurrencyKey],[dbo].[FactResellerSales].[SalesTerritoryKey],[dbo].[FactResellerSales].[SalesOrderNumber],[dbo].[FactResellerSales].[SalesOrderLineNumber],[dbo].[FactResellerSales].[RevisionNumber],[dbo].[FactResellerSales].[OrderQuantity],[dbo].[FactResellerSales].[UnitPrice],[dbo].[FactResellerSales].[ExtendedAmount],[dbo].[FactResellerSales].[UnitPriceDiscountPct],[dbo].[FactResellerSales].[DiscountAmount],[dbo].[FactResellerSales].[ProductStandardCost],[dbo].[FactResellerSales].[TotalProductCost],[dbo].[FactResellerSales].[SalesAmount],[dbo].[FactResellerSales].[TaxAmt],[dbo].[FactResellerSales].[Freight],[dbo].[FactResellerSales].[CarrierTrackingNumber],[dbo].[FactResellerSales].[CustomerPONumber]
+ FROM [dbo].[FactResellerSales]
+ WHERE OrderDateKey <= '20051231'
+)
+ AS [FactResellerSales]
+)
+ AS [dbo_FactResellerSales],[dbo].[DimReseller] AS [dbo_DimReseller_6]
+WHERE 
+(
+
+(
+[dbo_FactResellerSales].[dbo_FactResellerSalesResellerKey0_14] = [dbo_DimReseller_6].[ResellerKey]
+)
+
+)
+			Processing Partition 'Reseller_Sales_2006' completed.
+				Start time: 10/06/2018 7:39:34 PM; End time: 10/06/2018 7:40:03 PM; Duration: 0:00:28
+				SQL queries 1
+					SELECT [dbo_FactResellerSales].[dbo_FactResellerSalesSalesAmount0_0] AS [dbo_FactResellerSalesSalesAmount0_0],[dbo_FactResellerSales].[dbo_FactResellerSalesOrderQuantity0_1] AS [dbo_FactResellerSalesOrderQuantity0_1],[dbo_FactResellerSales].[dbo_FactResellerSalesExtendedAmount0_2] AS [dbo_FactResellerSalesExtendedAmount0_2],[dbo_FactResellerSales].[dbo_FactResellerSalesTaxAmt0_3] AS [dbo_FactResellerSalesTaxAmt0_3],[dbo_FactResellerSales].[dbo_FactResellerSalesFreight0_4] AS [dbo_FactResellerSalesFreight0_4],[dbo_FactResellerSales].[dbo_FactResellerSalesDiscountAmount0_5] AS [dbo_FactResellerSalesDiscountAmount0_5],[dbo_FactResellerSales].[dbo_FactResellerSalesUnitPrice0_6] AS [dbo_FactResellerSalesUnitPrice0_6],[dbo_FactResellerSales].[dbo_FactResellerSalesUnitPriceDiscountPct0_7] AS [dbo_FactResellerSalesUnitPriceDiscountPct0_7],[dbo_FactResellerSales].[dbo_FactResellerSalesTotalProductCost0_8] AS [dbo_FactResellerSalesTotalProductCost0_8],[dbo_FactResellerSales].[dbo_FactResellerSalesProductStandardCost0_9] AS [dbo_FactResellerSalesProductStandardCost0_9],[dbo_FactResellerSales].[dbo_FactResellerSales0_10] AS [dbo_FactResellerSales0_10],[dbo_FactResellerSales].[dbo_FactResellerSalesEmployeeKey0_11] AS [dbo_FactResellerSalesEmployeeKey0_11],[dbo_FactResellerSales].[dbo_FactResellerSalesPromotionKey0_12] AS [dbo_FactResellerSalesPromotionKey0_12],[dbo_FactResellerSales].[dbo_FactResellerSalesSalesTerritoryKey0_13] AS [dbo_FactResellerSalesSalesTerritoryKey0_13],[dbo_FactResellerSales].[dbo_FactResellerSalesResellerKey0_14] AS [dbo_FactResellerSalesResellerKey0_14],[dbo_FactResellerSales].[dbo_FactResellerSalesProductKey0_15] AS [dbo_FactResellerSalesProductKey0_15],[dbo_FactResellerSales].[dbo_FactResellerSalesCurrencyKey0_16] AS [dbo_FactResellerSalesCurrencyKey0_16],[dbo_FactResellerSales].[dbo_FactResellerSalesOrderDateKey0_17] AS [dbo_FactResellerSalesOrderDateKey0_17],[dbo_FactResellerSales].[dbo_FactResellerSalesShipDateKey0_18] AS [dbo_FactResellerSalesShipDateKey0_18],[dbo_FactResellerSales].[dbo_FactResellerSalesDueDateKey0_19] AS [dbo_FactResellerSalesDueDateKey0_19],[dbo_DimReseller_6].[GeographyKey] AS [dbo_DimResellerGeographyKey2_0]
+FROM 
+(
+
+SELECT [SalesAmount] AS [dbo_FactResellerSalesSalesAmount0_0],[OrderQuantity] AS [dbo_FactResellerSalesOrderQuantity0_1],[ExtendedAmount] AS [dbo_FactResellerSalesExtendedAmount0_2],[TaxAmt] AS [dbo_FactResellerSalesTaxAmt0_3],[Freight] AS [dbo_FactResellerSalesFreight0_4],[DiscountAmount] AS [dbo_FactResellerSalesDiscountAmount0_5],[UnitPrice] AS [dbo_FactResellerSalesUnitPrice0_6],[UnitPriceDiscountPct] AS [dbo_FactResellerSalesUnitPriceDiscountPct0_7],[TotalProductCost] AS [dbo_FactResellerSalesTotalProductCost0_8],[ProductStandardCost] AS [dbo_FactResellerSalesProductStandardCost0_9],1   AS [dbo_FactResellerSales0_10],[EmployeeKey] AS [dbo_FactResellerSalesEmployeeKey0_11],[PromotionKey] AS [dbo_FactResellerSalesPromotionKey0_12],[SalesTerritoryKey] AS [dbo_FactResellerSalesSalesTerritoryKey0_13],[ResellerKey] AS [dbo_FactResellerSalesResellerKey0_14],[ProductKey] AS [dbo_FactResellerSalesProductKey0_15],[CurrencyKey] AS [dbo_FactResellerSalesCurrencyKey0_16],[OrderDateKey] AS [dbo_FactResellerSalesOrderDateKey0_17],[ShipDateKey] AS [dbo_FactResellerSalesShipDateKey0_18],[DueDateKey] AS [dbo_FactResellerSalesDueDateKey0_19]
+FROM 
+(
+
+SELECT [dbo].[FactResellerSales].[ProductKey],[dbo].[FactResellerSales].[OrderDateKey],[dbo].[FactResellerSales].[DueDateKey],[dbo].[FactResellerSales].[ShipDateKey],[dbo].[FactResellerSales].[ResellerKey], [dbo].[FactResellerSales].[EmployeeKey],[dbo].[FactResellerSales].[PromotionKey],[dbo].[FactResellerSales].[CurrencyKey],[dbo].[FactResellerSales].[SalesTerritoryKey],[dbo].[FactResellerSales].[SalesOrderNumber],[dbo].[FactResellerSales].[SalesOrderLineNumber],[dbo].[FactResellerSales].[RevisionNumber],[dbo].[FactResellerSales].[OrderQuantity],[dbo].[FactResellerSales].[UnitPrice],[dbo].[FactResellerSales].[ExtendedAmount],[dbo].[FactResellerSales].[UnitPriceDiscountPct],[dbo].[FactResellerSales].[DiscountAmount],[dbo].[FactResellerSales].[ProductStandardCost],[dbo].[FactResellerSales].[TotalProductCost],[dbo].[FactResellerSales].[SalesAmount],[dbo].[FactResellerSales].[TaxAmt],[dbo].[FactResellerSales].[Freight],[dbo].[FactResellerSales].[CarrierTrackingNumber],[dbo].[FactResellerSales].[CustomerPONumber]
+ FROM [dbo].[FactResellerSales]
+ WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+)
+ AS [FactResellerSales]
+)
+ AS [dbo_FactResellerSales],[dbo].[DimReseller] AS [dbo_DimReseller_6]
+WHERE 
+(
+
+(
+[dbo_FactResellerSales].[dbo_FactResellerSalesResellerKey0_14] = [dbo_DimReseller_6].[ResellerKey]
+)
+
+)
+			Processing Partition 'Reseller_Sales_2007' completed.
+				Start time: 10/06/2018 7:39:40 PM; End time: 10/06/2018 7:40:03 PM; Duration: 0:00:22
+				SQL queries 1
+					SELECT [dbo_FactResellerSales].[dbo_FactResellerSalesSalesAmount0_0] AS [dbo_FactResellerSalesSalesAmount0_0],[dbo_FactResellerSales].[dbo_FactResellerSalesOrderQuantity0_1] AS [dbo_FactResellerSalesOrderQuantity0_1],[dbo_FactResellerSales].[dbo_FactResellerSalesExtendedAmount0_2] AS [dbo_FactResellerSalesExtendedAmount0_2],[dbo_FactResellerSales].[dbo_FactResellerSalesTaxAmt0_3] AS [dbo_FactResellerSalesTaxAmt0_3],[dbo_FactResellerSales].[dbo_FactResellerSalesFreight0_4] AS [dbo_FactResellerSalesFreight0_4],[dbo_FactResellerSales].[dbo_FactResellerSalesDiscountAmount0_5] AS [dbo_FactResellerSalesDiscountAmount0_5],[dbo_FactResellerSales].[dbo_FactResellerSalesUnitPrice0_6] AS [dbo_FactResellerSalesUnitPrice0_6],[dbo_FactResellerSales].[dbo_FactResellerSalesUnitPriceDiscountPct0_7] AS [dbo_FactResellerSalesUnitPriceDiscountPct0_7],[dbo_FactResellerSales].[dbo_FactResellerSalesTotalProductCost0_8] AS [dbo_FactResellerSalesTotalProductCost0_8],[dbo_FactResellerSales].[dbo_FactResellerSalesProductStandardCost0_9] AS [dbo_FactResellerSalesProductStandardCost0_9],[dbo_FactResellerSales].[dbo_FactResellerSales0_10] AS [dbo_FactResellerSales0_10],[dbo_FactResellerSales].[dbo_FactResellerSalesEmployeeKey0_11] AS [dbo_FactResellerSalesEmployeeKey0_11],[dbo_FactResellerSales].[dbo_FactResellerSalesPromotionKey0_12] AS [dbo_FactResellerSalesPromotionKey0_12],[dbo_FactResellerSales].[dbo_FactResellerSalesSalesTerritoryKey0_13] AS [dbo_FactResellerSalesSalesTerritoryKey0_13],[dbo_FactResellerSales].[dbo_FactResellerSalesResellerKey0_14] AS [dbo_FactResellerSalesResellerKey0_14],[dbo_FactResellerSales].[dbo_FactResellerSalesProductKey0_15] AS [dbo_FactResellerSalesProductKey0_15],[dbo_FactResellerSales].[dbo_FactResellerSalesCurrencyKey0_16] AS [dbo_FactResellerSalesCurrencyKey0_16],[dbo_FactResellerSales].[dbo_FactResellerSalesOrderDateKey0_17] AS [dbo_FactResellerSalesOrderDateKey0_17],[dbo_FactResellerSales].[dbo_FactResellerSalesShipDateKey0_18] AS [dbo_FactResellerSalesShipDateKey0_18],[dbo_FactResellerSales].[dbo_FactResellerSalesDueDateKey0_19] AS [dbo_FactResellerSalesDueDateKey0_19],[dbo_DimReseller_6].[GeographyKey] AS [dbo_DimResellerGeographyKey2_0]
+FROM 
+(
+
+SELECT [SalesAmount] AS [dbo_FactResellerSalesSalesAmount0_0],[OrderQuantity] AS [dbo_FactResellerSalesOrderQuantity0_1],[ExtendedAmount] AS [dbo_FactResellerSalesExtendedAmount0_2],[TaxAmt] AS [dbo_FactResellerSalesTaxAmt0_3],[Freight] AS [dbo_FactResellerSalesFreight0_4],[DiscountAmount] AS [dbo_FactResellerSalesDiscountAmount0_5],[UnitPrice] AS [dbo_FactResellerSalesUnitPrice0_6],[UnitPriceDiscountPct] AS [dbo_FactResellerSalesUnitPriceDiscountPct0_7],[TotalProductCost] AS [dbo_FactResellerSalesTotalProductCost0_8],[ProductStandardCost] AS [dbo_FactResellerSalesProductStandardCost0_9],1   AS [dbo_FactResellerSales0_10],[EmployeeKey] AS [dbo_FactResellerSalesEmployeeKey0_11],[PromotionKey] AS [dbo_FactResellerSalesPromotionKey0_12],[SalesTerritoryKey] AS [dbo_FactResellerSalesSalesTerritoryKey0_13],[ResellerKey] AS [dbo_FactResellerSalesResellerKey0_14],[ProductKey] AS [dbo_FactResellerSalesProductKey0_15],[CurrencyKey] AS [dbo_FactResellerSalesCurrencyKey0_16],[OrderDateKey] AS [dbo_FactResellerSalesOrderDateKey0_17],[ShipDateKey] AS [dbo_FactResellerSalesShipDateKey0_18],[DueDateKey] AS [dbo_FactResellerSalesDueDateKey0_19]
+FROM 
+(
+
+SELECT [dbo].[FactResellerSales].[ProductKey],[dbo].[FactResellerSales].[OrderDateKey],[dbo].[FactResellerSales].[DueDateKey],[dbo].[FactResellerSales].[ShipDateKey],[dbo].[FactResellerSales].[ResellerKey], [dbo].[FactResellerSales].[EmployeeKey],[dbo].[FactResellerSales].[PromotionKey],[dbo].[FactResellerSales].[CurrencyKey],[dbo].[FactResellerSales].[SalesTerritoryKey],[dbo].[FactResellerSales].[SalesOrderNumber],[dbo].[FactResellerSales].[SalesOrderLineNumber],[dbo].[FactResellerSales].[RevisionNumber],[dbo].[FactResellerSales].[OrderQuantity],[dbo].[FactResellerSales].[UnitPrice],[dbo].[FactResellerSales].[ExtendedAmount],[dbo].[FactResellerSales].[UnitPriceDiscountPct],[dbo].[FactResellerSales].[DiscountAmount],[dbo].[FactResellerSales].[ProductStandardCost],[dbo].[FactResellerSales].[TotalProductCost],[dbo].[FactResellerSales].[SalesAmount],[dbo].[FactResellerSales].[TaxAmt],[dbo].[FactResellerSales].[Freight],[dbo].[FactResellerSales].[CarrierTrackingNumber],[dbo].[FactResellerSales].[CustomerPONumber]
+ FROM [dbo].[FactResellerSales]
+ WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+)
+ AS [FactResellerSales]
+)
+ AS [dbo_FactResellerSales],[dbo].[DimReseller] AS [dbo_DimReseller_6]
+WHERE 
+(
+
+(
+[dbo_FactResellerSales].[dbo_FactResellerSalesResellerKey0_14] = [dbo_DimReseller_6].[ResellerKey]
+)
+
+)
+			Processing Partition 'Reseller_Sales_2008' completed.
+				Start time: 10/06/2018 7:39:32 PM; End time: 10/06/2018 7:39:47 PM; Duration: 0:00:14
+				SQL queries 1
+					SELECT [dbo_FactResellerSales].[dbo_FactResellerSalesSalesAmount0_0] AS [dbo_FactResellerSalesSalesAmount0_0],[dbo_FactResellerSales].[dbo_FactResellerSalesOrderQuantity0_1] AS [dbo_FactResellerSalesOrderQuantity0_1],[dbo_FactResellerSales].[dbo_FactResellerSalesExtendedAmount0_2] AS [dbo_FactResellerSalesExtendedAmount0_2],[dbo_FactResellerSales].[dbo_FactResellerSalesTaxAmt0_3] AS [dbo_FactResellerSalesTaxAmt0_3],[dbo_FactResellerSales].[dbo_FactResellerSalesFreight0_4] AS [dbo_FactResellerSalesFreight0_4],[dbo_FactResellerSales].[dbo_FactResellerSalesDiscountAmount0_5] AS [dbo_FactResellerSalesDiscountAmount0_5],[dbo_FactResellerSales].[dbo_FactResellerSalesUnitPrice0_6] AS [dbo_FactResellerSalesUnitPrice0_6],[dbo_FactResellerSales].[dbo_FactResellerSalesUnitPriceDiscountPct0_7] AS [dbo_FactResellerSalesUnitPriceDiscountPct0_7],[dbo_FactResellerSales].[dbo_FactResellerSalesTotalProductCost0_8] AS [dbo_FactResellerSalesTotalProductCost0_8],[dbo_FactResellerSales].[dbo_FactResellerSalesProductStandardCost0_9] AS [dbo_FactResellerSalesProductStandardCost0_9],[dbo_FactResellerSales].[dbo_FactResellerSales0_10] AS [dbo_FactResellerSales0_10],[dbo_FactResellerSales].[dbo_FactResellerSalesEmployeeKey0_11] AS [dbo_FactResellerSalesEmployeeKey0_11],[dbo_FactResellerSales].[dbo_FactResellerSalesPromotionKey0_12] AS [dbo_FactResellerSalesPromotionKey0_12],[dbo_FactResellerSales].[dbo_FactResellerSalesSalesTerritoryKey0_13] AS [dbo_FactResellerSalesSalesTerritoryKey0_13],[dbo_FactResellerSales].[dbo_FactResellerSalesResellerKey0_14] AS [dbo_FactResellerSalesResellerKey0_14],[dbo_FactResellerSales].[dbo_FactResellerSalesProductKey0_15] AS [dbo_FactResellerSalesProductKey0_15],[dbo_FactResellerSales].[dbo_FactResellerSalesCurrencyKey0_16] AS [dbo_FactResellerSalesCurrencyKey0_16],[dbo_FactResellerSales].[dbo_FactResellerSalesOrderDateKey0_17] AS [dbo_FactResellerSalesOrderDateKey0_17],[dbo_FactResellerSales].[dbo_FactResellerSalesShipDateKey0_18] AS [dbo_FactResellerSalesShipDateKey0_18],[dbo_FactResellerSales].[dbo_FactResellerSalesDueDateKey0_19] AS [dbo_FactResellerSalesDueDateKey0_19],[dbo_DimReseller_6].[GeographyKey] AS [dbo_DimResellerGeographyKey2_0]
+FROM 
+(
+
+SELECT [SalesAmount] AS [dbo_FactResellerSalesSalesAmount0_0],[OrderQuantity] AS [dbo_FactResellerSalesOrderQuantity0_1],[ExtendedAmount] AS [dbo_FactResellerSalesExtendedAmount0_2],[TaxAmt] AS [dbo_FactResellerSalesTaxAmt0_3],[Freight] AS [dbo_FactResellerSalesFreight0_4],[DiscountAmount] AS [dbo_FactResellerSalesDiscountAmount0_5],[UnitPrice] AS [dbo_FactResellerSalesUnitPrice0_6],[UnitPriceDiscountPct] AS [dbo_FactResellerSalesUnitPriceDiscountPct0_7],[TotalProductCost] AS [dbo_FactResellerSalesTotalProductCost0_8],[ProductStandardCost] AS [dbo_FactResellerSalesProductStandardCost0_9],1   AS [dbo_FactResellerSales0_10],[EmployeeKey] AS [dbo_FactResellerSalesEmployeeKey0_11],[PromotionKey] AS [dbo_FactResellerSalesPromotionKey0_12],[SalesTerritoryKey] AS [dbo_FactResellerSalesSalesTerritoryKey0_13],[ResellerKey] AS [dbo_FactResellerSalesResellerKey0_14],[ProductKey] AS [dbo_FactResellerSalesProductKey0_15],[CurrencyKey] AS [dbo_FactResellerSalesCurrencyKey0_16],[OrderDateKey] AS [dbo_FactResellerSalesOrderDateKey0_17],[ShipDateKey] AS [dbo_FactResellerSalesShipDateKey0_18],[DueDateKey] AS [dbo_FactResellerSalesDueDateKey0_19]
+FROM 
+(
+
+SELECT [dbo].[FactResellerSales].[ProductKey],[dbo].[FactResellerSales].[OrderDateKey],[dbo].[FactResellerSales].[DueDateKey],[dbo].[FactResellerSales].[ShipDateKey],[dbo].[FactResellerSales].[ResellerKey], [dbo].[FactResellerSales].[EmployeeKey],[dbo].[FactResellerSales].[PromotionKey],[dbo].[FactResellerSales].[CurrencyKey],[dbo].[FactResellerSales].[SalesTerritoryKey],[dbo].[FactResellerSales].[SalesOrderNumber],[dbo].[FactResellerSales].[SalesOrderLineNumber],[dbo].[FactResellerSales].[RevisionNumber],[dbo].[FactResellerSales].[OrderQuantity],[dbo].[FactResellerSales].[UnitPrice],[dbo].[FactResellerSales].[ExtendedAmount],[dbo].[FactResellerSales].[UnitPriceDiscountPct],[dbo].[FactResellerSales].[DiscountAmount],[dbo].[FactResellerSales].[ProductStandardCost],[dbo].[FactResellerSales].[TotalProductCost],[dbo].[FactResellerSales].[SalesAmount],[dbo].[FactResellerSales].[TaxAmt],[dbo].[FactResellerSales].[Freight],[dbo].[FactResellerSales].[CarrierTrackingNumber],[dbo].[FactResellerSales].[CustomerPONumber]
+ FROM [dbo].[FactResellerSales]
+ WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+)
+ AS [FactResellerSales]
+)
+ AS [dbo_FactResellerSales],[dbo].[DimReseller] AS [dbo_DimReseller_6]
+WHERE 
+(
+
+(
+[dbo_FactResellerSales].[dbo_FactResellerSalesResellerKey0_14] = [dbo_DimReseller_6].[ResellerKey]
+)
+
+)
+		Processing Measure Group 'Sales Orders' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:40:03 PM; Duration: 0:00:33
+			Processing Partition 'Total_Orders_2005' completed.
+				Start time: 10/06/2018 7:39:33 PM; End time: 10/06/2018 7:39:49 PM; Duration: 0:00:15
+				SQL queries 1
+					SELECT [FactSalesSummary].[SalesOrderNumber] AS [FactSalesSummarySalesOrderNumber0_0],[FactSalesSummary].[ProductKey] AS [FactSalesSummaryProductKey0_1],[FactSalesSummary].[PromotionKey] AS [FactSalesSummaryPromotionKey0_2],[FactSalesSummary].[SalesTerritoryKey] AS [FactSalesSummarySalesTerritoryKey0_3],[FactSalesSummary].[SalesChannel] AS [FactSalesSummarySalesChannel0_4],[FactSalesSummary].[CurrencyKey] AS [FactSalesSummaryCurrencyKey0_5],[FactSalesSummary].[OrderDateKey] AS [FactSalesSummaryOrderDateKey0_6],[FactSalesSummary].[ShipDateKey] AS [FactSalesSummaryShipDateKey0_7],[FactSalesSummary].[DueDateKey] AS [FactSalesSummaryDueDateKey0_8]
+FROM 
+(
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, ResellerKey, NULL AS CustomerKey, EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Reseller' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactResellerSales
+
+WHERE OrderDateKey <= '20051231'
+
+UNION
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, NULL AS ResellerKey, CustomerKey, NULL AS EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Internet' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactInternetSales
+
+WHERE OrderDateKey <= '20051231'
+)
+ AS [FactSalesSummary]
+ORDER BY [FactSalesSummary].[SalesOrderNumber]
+ASC
+			Processing Partition 'Total_Orders_2006' completed.
+				Start time: 10/06/2018 7:39:34 PM; End time: 10/06/2018 7:40:03 PM; Duration: 0:00:29
+				SQL queries 1
+					SELECT [FactSalesSummary].[SalesOrderNumber] AS [FactSalesSummarySalesOrderNumber0_0],[FactSalesSummary].[ProductKey] AS [FactSalesSummaryProductKey0_1],[FactSalesSummary].[PromotionKey] AS [FactSalesSummaryPromotionKey0_2],[FactSalesSummary].[SalesTerritoryKey] AS [FactSalesSummarySalesTerritoryKey0_3],[FactSalesSummary].[SalesChannel] AS [FactSalesSummarySalesChannel0_4],[FactSalesSummary].[CurrencyKey] AS [FactSalesSummaryCurrencyKey0_5],[FactSalesSummary].[OrderDateKey] AS [FactSalesSummaryOrderDateKey0_6],[FactSalesSummary].[ShipDateKey] AS [FactSalesSummaryShipDateKey0_7],[FactSalesSummary].[DueDateKey] AS [FactSalesSummaryDueDateKey0_8]
+FROM 
+(
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, ResellerKey, NULL AS CustomerKey, EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Reseller' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactResellerSales
+
+WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+
+UNION
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, NULL AS ResellerKey, CustomerKey, NULL AS EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Internet' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactInternetSales
+
+WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+)
+ AS [FactSalesSummary]
+ORDER BY [FactSalesSummary].[SalesOrderNumber]
+ASC
+			Processing Partition 'Total_Orders_2007' completed.
+				Start time: 10/06/2018 7:39:31 PM; End time: 10/06/2018 7:39:44 PM; Duration: 0:00:12
+				SQL queries 1
+					SELECT [FactSalesSummary].[SalesOrderNumber] AS [FactSalesSummarySalesOrderNumber0_0],[FactSalesSummary].[ProductKey] AS [FactSalesSummaryProductKey0_1],[FactSalesSummary].[PromotionKey] AS [FactSalesSummaryPromotionKey0_2],[FactSalesSummary].[SalesTerritoryKey] AS [FactSalesSummarySalesTerritoryKey0_3],[FactSalesSummary].[SalesChannel] AS [FactSalesSummarySalesChannel0_4],[FactSalesSummary].[CurrencyKey] AS [FactSalesSummaryCurrencyKey0_5],[FactSalesSummary].[OrderDateKey] AS [FactSalesSummaryOrderDateKey0_6],[FactSalesSummary].[ShipDateKey] AS [FactSalesSummaryShipDateKey0_7],[FactSalesSummary].[DueDateKey] AS [FactSalesSummaryDueDateKey0_8]
+FROM 
+(
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, ResellerKey, NULL AS CustomerKey, EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Reseller' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactResellerSales
+
+WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+
+UNION
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, NULL AS ResellerKey, CustomerKey, NULL AS EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Internet' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactInternetSales
+
+WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+)
+ AS [FactSalesSummary]
+ORDER BY [FactSalesSummary].[SalesOrderNumber]
+ASC
+			Processing Partition 'Total_Orders_2008' completed.
+				Start time: 10/06/2018 7:39:32 PM; End time: 10/06/2018 7:39:52 PM; Duration: 0:00:20
+				SQL queries 1
+					SELECT [FactSalesSummary].[SalesOrderNumber] AS [FactSalesSummarySalesOrderNumber0_0],[FactSalesSummary].[ProductKey] AS [FactSalesSummaryProductKey0_1],[FactSalesSummary].[PromotionKey] AS [FactSalesSummaryPromotionKey0_2],[FactSalesSummary].[SalesTerritoryKey] AS [FactSalesSummarySalesTerritoryKey0_3],[FactSalesSummary].[SalesChannel] AS [FactSalesSummarySalesChannel0_4],[FactSalesSummary].[CurrencyKey] AS [FactSalesSummaryCurrencyKey0_5],[FactSalesSummary].[OrderDateKey] AS [FactSalesSummaryOrderDateKey0_6],[FactSalesSummary].[ShipDateKey] AS [FactSalesSummaryShipDateKey0_7],[FactSalesSummary].[DueDateKey] AS [FactSalesSummaryDueDateKey0_8]
+FROM 
+(
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, ResellerKey, NULL AS CustomerKey, EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Reseller' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactResellerSales
+
+WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+
+UNION
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, NULL AS ResellerKey, CustomerKey, NULL AS EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Internet' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactInternetSales
+
+WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+)
+ AS [FactSalesSummary]
+ORDER BY [FactSalesSummary].[SalesOrderNumber]
+ASC
+		Processing Measure Group 'Sales Reasons' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:42 PM; Duration: 0:00:12
+			Processing Partition 'Internet_Sales_Reasons' completed. 64515 rows have been read.
+				Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:40 PM; Duration: 0:00:09
+				SQL queries 1
+					SELECT [dbo_FactInternetSalesReason].[dbo_FactInternetSalesReason0_0] AS [dbo_FactInternetSalesReason0_0],[dbo_FactInternetSalesReason].[dbo_FactInternetSalesReasonSalesReasonKey0_1] AS [dbo_FactInternetSalesReasonSalesReasonKey0_1]
+FROM 
+(
+
+SELECT 1   AS [dbo_FactInternetSalesReason0_0],[SalesReasonKey] AS [dbo_FactInternetSalesReasonSalesReasonKey0_1]
+FROM [dbo].[FactInternetSalesReason]
+)
+ AS [dbo_FactInternetSalesReason]
+		Processing Measure Group 'Sales Summary' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:40:10 PM; Duration: 0:00:39
+			Processing Partition 'Total_Sales_2005' completed.
+				Start time: 10/06/2018 7:39:41 PM; End time: 10/06/2018 7:40:10 PM; Duration: 0:00:28
+				SQL queries 1
+					SELECT [FactSalesSummary].[FactSalesSummaryOrderQuantity0_0] AS [FactSalesSummaryOrderQuantity0_0],[FactSalesSummary].[FactSalesSummaryUnitPrice0_1] AS [FactSalesSummaryUnitPrice0_1],[FactSalesSummary].[FactSalesSummaryExtendedAmount0_2] AS [FactSalesSummaryExtendedAmount0_2],[FactSalesSummary].[FactSalesSummaryProductStandardCost0_3] AS [FactSalesSummaryProductStandardCost0_3],[FactSalesSummary].[FactSalesSummaryTotalProductCost0_4] AS [FactSalesSummaryTotalProductCost0_4],[FactSalesSummary].[FactSalesSummarySalesAmount0_5] AS [FactSalesSummarySalesAmount0_5],[FactSalesSummary].[FactSalesSummaryTaxAmt0_6] AS [FactSalesSummaryTaxAmt0_6],[FactSalesSummary].[FactSalesSummaryFreight0_7] AS [FactSalesSummaryFreight0_7],[FactSalesSummary].[FactSalesSummary0_8] AS [FactSalesSummary0_8],[FactSalesSummary].[FactSalesSummaryProductKey0_9] AS [FactSalesSummaryProductKey0_9],[FactSalesSummary].[FactSalesSummaryPromotionKey0_10] AS [FactSalesSummaryPromotionKey0_10],[FactSalesSummary].[FactSalesSummarySalesTerritoryKey0_11] AS [FactSalesSummarySalesTerritoryKey0_11],[FactSalesSummary].[FactSalesSummarySalesChannel0_12] AS [FactSalesSummarySalesChannel0_12],[FactSalesSummary].[FactSalesSummaryCurrencyKey0_13] AS [FactSalesSummaryCurrencyKey0_13],[FactSalesSummary].[FactSalesSummaryOrderDateKey0_14] AS [FactSalesSummaryOrderDateKey0_14],[FactSalesSummary].[FactSalesSummaryShipDateKey0_15] AS [FactSalesSummaryShipDateKey0_15],[FactSalesSummary].[FactSalesSummaryDueDateKey0_16] AS [FactSalesSummaryDueDateKey0_16]
+FROM 
+(
+
+SELECT [OrderQuantity] AS [FactSalesSummaryOrderQuantity0_0],[UnitPrice] AS [FactSalesSummaryUnitPrice0_1],[ExtendedAmount] AS [FactSalesSummaryExtendedAmount0_2],[ProductStandardCost] AS [FactSalesSummaryProductStandardCost0_3],[TotalProductCost] AS [FactSalesSummaryTotalProductCost0_4],[SalesAmount] AS [FactSalesSummarySalesAmount0_5],[TaxAmt] AS [FactSalesSummaryTaxAmt0_6],[Freight] AS [FactSalesSummaryFreight0_7],1   AS [FactSalesSummary0_8],[ProductKey] AS [FactSalesSummaryProductKey0_9],[PromotionKey] AS [FactSalesSummaryPromotionKey0_10],[SalesTerritoryKey] AS [FactSalesSummarySalesTerritoryKey0_11],[SalesChannel] AS [FactSalesSummarySalesChannel0_12],[CurrencyKey] AS [FactSalesSummaryCurrencyKey0_13],[OrderDateKey] AS [FactSalesSummaryOrderDateKey0_14],[ShipDateKey] AS [FactSalesSummaryShipDateKey0_15],[DueDateKey] AS [FactSalesSummaryDueDateKey0_16]
+FROM 
+(
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, ResellerKey, NULL AS CustomerKey, EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Reseller' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM    FactResellerSales
+
+WHERE OrderDateKey <= '20051231'
+
+UNION
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, NULL AS ResellerKey, CustomerKey, NULL AS EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Internet' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactInternetSales
+
+WHERE OrderDateKey <= '20051231'
+)
+ AS [Sales Summary Facts]
+)
+ AS [FactSalesSummary]
+			Processing Partition 'Total_Sales_2006' completed.
+				Start time: 10/06/2018 7:39:33 PM; End time: 10/06/2018 7:39:58 PM; Duration: 0:00:24
+				SQL queries 1
+					SELECT [FactSalesSummary].[FactSalesSummaryOrderQuantity0_0] AS [FactSalesSummaryOrderQuantity0_0],[FactSalesSummary].[FactSalesSummaryUnitPrice0_1] AS [FactSalesSummaryUnitPrice0_1],[FactSalesSummary].[FactSalesSummaryExtendedAmount0_2] AS [FactSalesSummaryExtendedAmount0_2],[FactSalesSummary].[FactSalesSummaryProductStandardCost0_3] AS [FactSalesSummaryProductStandardCost0_3],[FactSalesSummary].[FactSalesSummaryTotalProductCost0_4] AS [FactSalesSummaryTotalProductCost0_4],[FactSalesSummary].[FactSalesSummarySalesAmount0_5] AS [FactSalesSummarySalesAmount0_5],[FactSalesSummary].[FactSalesSummaryTaxAmt0_6] AS [FactSalesSummaryTaxAmt0_6],[FactSalesSummary].[FactSalesSummaryFreight0_7] AS [FactSalesSummaryFreight0_7],[FactSalesSummary].[FactSalesSummary0_8] AS [FactSalesSummary0_8],[FactSalesSummary].[FactSalesSummaryProductKey0_9] AS [FactSalesSummaryProductKey0_9],[FactSalesSummary].[FactSalesSummaryPromotionKey0_10] AS [FactSalesSummaryPromotionKey0_10],[FactSalesSummary].[FactSalesSummarySalesTerritoryKey0_11] AS [FactSalesSummarySalesTerritoryKey0_11],[FactSalesSummary].[FactSalesSummarySalesChannel0_12] AS [FactSalesSummarySalesChannel0_12],[FactSalesSummary].[FactSalesSummaryCurrencyKey0_13] AS [FactSalesSummaryCurrencyKey0_13],[FactSalesSummary].[FactSalesSummaryOrderDateKey0_14] AS [FactSalesSummaryOrderDateKey0_14],[FactSalesSummary].[FactSalesSummaryShipDateKey0_15] AS [FactSalesSummaryShipDateKey0_15],[FactSalesSummary].[FactSalesSummaryDueDateKey0_16] AS [FactSalesSummaryDueDateKey0_16]
+FROM 
+(
+
+SELECT [OrderQuantity] AS [FactSalesSummaryOrderQuantity0_0],[UnitPrice] AS [FactSalesSummaryUnitPrice0_1],[ExtendedAmount] AS [FactSalesSummaryExtendedAmount0_2],[ProductStandardCost] AS [FactSalesSummaryProductStandardCost0_3],[TotalProductCost] AS [FactSalesSummaryTotalProductCost0_4],[SalesAmount] AS [FactSalesSummarySalesAmount0_5],[TaxAmt] AS [FactSalesSummaryTaxAmt0_6],[Freight] AS [FactSalesSummaryFreight0_7],1   AS [FactSalesSummary0_8],[ProductKey] AS [FactSalesSummaryProductKey0_9],[PromotionKey] AS [FactSalesSummaryPromotionKey0_10],[SalesTerritoryKey] AS [FactSalesSummarySalesTerritoryKey0_11],[SalesChannel] AS [FactSalesSummarySalesChannel0_12],[CurrencyKey] AS [FactSalesSummaryCurrencyKey0_13],[OrderDateKey] AS [FactSalesSummaryOrderDateKey0_14],[ShipDateKey] AS [FactSalesSummaryShipDateKey0_15],[DueDateKey] AS [FactSalesSummaryDueDateKey0_16]
+FROM 
+(
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, ResellerKey, NULL AS CustomerKey, EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Reseller' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactResellerSales 
+
+WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+
+UNION
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, NULL AS ResellerKey, CustomerKey, NULL AS EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Internet' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactInternetSales
+
+WHERE OrderDateKey >= '20060101' AND OrderDateKey <= '20061231'
+)
+ AS [Sales Summary Facts]
+)
+ AS [FactSalesSummary]
+			Processing Partition 'Total_Sales_2007' completed.
+				Start time: 10/06/2018 7:39:31 PM; End time: 10/06/2018 7:39:44 PM; Duration: 0:00:13
+				SQL queries 1
+					SELECT [FactSalesSummary].[FactSalesSummaryOrderQuantity0_0] AS [FactSalesSummaryOrderQuantity0_0],[FactSalesSummary].[FactSalesSummaryUnitPrice0_1] AS [FactSalesSummaryUnitPrice0_1],[FactSalesSummary].[FactSalesSummaryExtendedAmount0_2] AS [FactSalesSummaryExtendedAmount0_2],[FactSalesSummary].[FactSalesSummaryProductStandardCost0_3] AS [FactSalesSummaryProductStandardCost0_3],[FactSalesSummary].[FactSalesSummaryTotalProductCost0_4] AS [FactSalesSummaryTotalProductCost0_4],[FactSalesSummary].[FactSalesSummarySalesAmount0_5] AS [FactSalesSummarySalesAmount0_5],[FactSalesSummary].[FactSalesSummaryTaxAmt0_6] AS [FactSalesSummaryTaxAmt0_6],[FactSalesSummary].[FactSalesSummaryFreight0_7] AS [FactSalesSummaryFreight0_7],[FactSalesSummary].[FactSalesSummary0_8] AS [FactSalesSummary0_8],[FactSalesSummary].[FactSalesSummaryProductKey0_9] AS [FactSalesSummaryProductKey0_9],[FactSalesSummary].[FactSalesSummaryPromotionKey0_10] AS [FactSalesSummaryPromotionKey0_10],[FactSalesSummary].[FactSalesSummarySalesTerritoryKey0_11] AS [FactSalesSummarySalesTerritoryKey0_11],[FactSalesSummary].[FactSalesSummarySalesChannel0_12] AS [FactSalesSummarySalesChannel0_12],[FactSalesSummary].[FactSalesSummaryCurrencyKey0_13] AS [FactSalesSummaryCurrencyKey0_13],[FactSalesSummary].[FactSalesSummaryOrderDateKey0_14] AS [FactSalesSummaryOrderDateKey0_14],[FactSalesSummary].[FactSalesSummaryShipDateKey0_15] AS [FactSalesSummaryShipDateKey0_15],[FactSalesSummary].[FactSalesSummaryDueDateKey0_16] AS [FactSalesSummaryDueDateKey0_16]
+FROM 
+(
+
+SELECT [OrderQuantity] AS [FactSalesSummaryOrderQuantity0_0],[UnitPrice] AS [FactSalesSummaryUnitPrice0_1],[ExtendedAmount] AS [FactSalesSummaryExtendedAmount0_2],[ProductStandardCost] AS [FactSalesSummaryProductStandardCost0_3],[TotalProductCost] AS [FactSalesSummaryTotalProductCost0_4],[SalesAmount] AS [FactSalesSummarySalesAmount0_5],[TaxAmt] AS [FactSalesSummaryTaxAmt0_6],[Freight] AS [FactSalesSummaryFreight0_7],1   AS [FactSalesSummary0_8],[ProductKey] AS [FactSalesSummaryProductKey0_9],[PromotionKey] AS [FactSalesSummaryPromotionKey0_10],[SalesTerritoryKey] AS [FactSalesSummarySalesTerritoryKey0_11],[SalesChannel] AS [FactSalesSummarySalesChannel0_12],[CurrencyKey] AS [FactSalesSummaryCurrencyKey0_13],[OrderDateKey] AS [FactSalesSummaryOrderDateKey0_14],[ShipDateKey] AS [FactSalesSummaryShipDateKey0_15],[DueDateKey] AS [FactSalesSummaryDueDateKey0_16]
+FROM 
+(
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, ResellerKey, NULL AS CustomerKey, EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Reseller' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactResellerSales
+
+WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+
+UNION
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, NULL AS ResellerKey, CustomerKey, NULL AS EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Internet' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactInternetSales
+
+WHERE OrderDateKey >= '20070101' AND OrderDateKey <= '20071231'
+)
+ AS [Sales Summary Facts]
+)
+ AS [FactSalesSummary]
+			Processing Partition 'Total_Sales_2008' completed.
+				Start time: 10/06/2018 7:39:35 PM; End time: 10/06/2018 7:39:48 PM; Duration: 0:00:13
+				SQL queries 1
+					SELECT [FactSalesSummary].[FactSalesSummaryOrderQuantity0_0] AS [FactSalesSummaryOrderQuantity0_0],[FactSalesSummary].[FactSalesSummaryUnitPrice0_1] AS [FactSalesSummaryUnitPrice0_1],[FactSalesSummary].[FactSalesSummaryExtendedAmount0_2] AS [FactSalesSummaryExtendedAmount0_2],[FactSalesSummary].[FactSalesSummaryProductStandardCost0_3] AS [FactSalesSummaryProductStandardCost0_3],[FactSalesSummary].[FactSalesSummaryTotalProductCost0_4] AS [FactSalesSummaryTotalProductCost0_4],[FactSalesSummary].[FactSalesSummarySalesAmount0_5] AS [FactSalesSummarySalesAmount0_5],[FactSalesSummary].[FactSalesSummaryTaxAmt0_6] AS [FactSalesSummaryTaxAmt0_6],[FactSalesSummary].[FactSalesSummaryFreight0_7] AS [FactSalesSummaryFreight0_7],[FactSalesSummary].[FactSalesSummary0_8] AS [FactSalesSummary0_8],[FactSalesSummary].[FactSalesSummaryProductKey0_9] AS [FactSalesSummaryProductKey0_9],[FactSalesSummary].[FactSalesSummaryPromotionKey0_10] AS [FactSalesSummaryPromotionKey0_10],[FactSalesSummary].[FactSalesSummarySalesTerritoryKey0_11] AS [FactSalesSummarySalesTerritoryKey0_11],[FactSalesSummary].[FactSalesSummarySalesChannel0_12] AS [FactSalesSummarySalesChannel0_12],[FactSalesSummary].[FactSalesSummaryCurrencyKey0_13] AS [FactSalesSummaryCurrencyKey0_13],[FactSalesSummary].[FactSalesSummaryOrderDateKey0_14] AS [FactSalesSummaryOrderDateKey0_14],[FactSalesSummary].[FactSalesSummaryShipDateKey0_15] AS [FactSalesSummaryShipDateKey0_15],[FactSalesSummary].[FactSalesSummaryDueDateKey0_16] AS [FactSalesSummaryDueDateKey0_16]
+FROM 
+(
+
+SELECT [OrderQuantity] AS [FactSalesSummaryOrderQuantity0_0],[UnitPrice] AS [FactSalesSummaryUnitPrice0_1],[ExtendedAmount] AS [FactSalesSummaryExtendedAmount0_2],[ProductStandardCost] AS [FactSalesSummaryProductStandardCost0_3],[TotalProductCost] AS [FactSalesSummaryTotalProductCost0_4],[SalesAmount] AS [FactSalesSummarySalesAmount0_5],[TaxAmt] AS [FactSalesSummaryTaxAmt0_6],[Freight] AS [FactSalesSummaryFreight0_7],1   AS [FactSalesSummary0_8],[ProductKey] AS [FactSalesSummaryProductKey0_9],[PromotionKey] AS [FactSalesSummaryPromotionKey0_10],[SalesTerritoryKey] AS [FactSalesSummarySalesTerritoryKey0_11],[SalesChannel] AS [FactSalesSummarySalesChannel0_12],[CurrencyKey] AS [FactSalesSummaryCurrencyKey0_13],[OrderDateKey] AS [FactSalesSummaryOrderDateKey0_14],[ShipDateKey] AS [FactSalesSummaryShipDateKey0_15],[DueDateKey] AS [FactSalesSummaryDueDateKey0_16]
+FROM 
+(
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, ResellerKey, NULL AS CustomerKey, EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Reseller' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactResellerSales
+
+WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+
+UNION
+
+SELECT     ProductKey, OrderDateKey, DueDateKey, ShipDateKey, NULL AS ResellerKey, CustomerKey, NULL AS EmployeeKey, PromotionKey, CurrencyKey, 
+                      SalesTerritoryKey, SalesOrderNumber, SalesOrderLineNumber, RevisionNumber, OrderQuantity, UnitPrice, ExtendedAmount, UnitPriceDiscountPct, 
+                      DiscountAmount, ProductStandardCost, TotalProductCost, SalesAmount, TaxAmt, Freight, CarrierTrackingNumber, CustomerPONumber, 
+                      'Internet' AS SalesChannel, CONVERT(CHAR(10), SalesOrderNumber) + 'Line ' + CONVERT(CHAR(4), SalesOrderLineNumber) AS SalesOrderDesc
+
+FROM         FactInternetSales
+
+WHERE OrderDateKey >= '20080101' AND OrderDateKey <= '20081231'
+)
+ AS [Sales Summary Facts]
+)
+ AS [FactSalesSummary]
+		Processing Measure Group 'Sales Targets' completed.
+			Start time: 10/06/2018 7:39:30 PM; End time: 10/06/2018 7:39:41 PM; Duration: 0:00:10
+			Processing Partition 'Sales_Quotas' completed. 163 rows have been read.
+				Start time: 10/06/2018 7:39:31 PM; End time: 10/06/2018 7:39:35 PM; Duration: 0:00:04
+				SQL queries 1
+					SELECT [FactSalesQuota].[SalesAmountQuota] AS [FactSalesQuotaSalesAmountQuota0_0],[FactSalesQuota].[EmployeeKey] AS [FactSalesQuotaEmployeeKey0_1],[FactSalesQuota].[CalendarYear] AS [FactSalesQuotaCalendarYear0_2],[FactSalesQuota].[CalendarQuarter] AS [FactSalesQuotaCalendarQuarter0_3],[dbo_DimEmployee_10].[SalesTerritoryKey] AS [dbo_DimEmployeeSalesTerritoryKey2_0]
+FROM 
+(
+
+SELECT     EmployeeKey, CalendarQuarter, CalendarYear, SalesAmountQuota
+FROM         dbo.FactSalesQuota
+)
+ AS [FactSalesQuota],[dbo].[DimEmployee] AS [dbo_DimEmployee_10]
+WHERE 
+(
+
+(
+[FactSalesQuota].[EmployeeKey] = [dbo_DimEmployee_10].[EmployeeKey]
+)
+
+)
+	Processing Dimension 'Customer' completed.
+		Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:39:24 PM; Duration: 0:01:21
+		Processing Dimension Attribute '(All)' completed.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Address' completed. 12798 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:39:00 PM; Duration: 0:00:55
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[AddressLine1] AS [dbo_DimCustomerAddressLine10_0]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Birth Date' completed. 6140 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:09 PM; Duration: 0:00:04
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[BirthDate] AS [dbo_DimCustomerBirthDate0_0]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'City' completed. 588 rows have been read.
+			Start time: 10/06/2018 7:38:59 PM; End time: 10/06/2018 7:39:00 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[City] AS [dbo_DimGeographyCity0_0],[dbo_DimGeography].[StateProvinceCode] AS [dbo_DimGeographyStateProvinceCode0_1],[dbo_DimGeography].[CountryRegionCode] AS [dbo_DimGeographyCountryRegionCode0_2]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+		Processing Dimension Attribute 'Commute Distance' completed. 6 rows have been read.
+			Start time: 10/06/2018 7:38:46 PM; End time: 10/06/2018 7:39:11 PM; Duration: 0:00:25
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[dbo_DimCustomerCommuteDistance0_0] AS [dbo_DimCustomerCommuteDistance0_0],[dbo_DimCustomer].[dbo_DimCustomerCommuteDistanceSort0_1] AS [dbo_DimCustomerCommuteDistanceSort0_1]
+FROM 
+(
+
+SELECT [CommuteDistance] AS [dbo_DimCustomerCommuteDistance0_0],CASE 
+    WHEN CommuteDistance= '0-1 Miles'  THEN 
+        '1'
+    WHEN CommuteDistance= '1-2 Miles'  THEN 
+        '2'
+    WHEN CommuteDistance= '2-5 Miles'  THEN 
+        '3'
+    WHEN CommuteDistance= '5-10 Miles' THEN 
+        '4'
+    WHEN CommuteDistance= '10+ Miles'  THEN 
+        '5'
+END   AS [dbo_DimCustomerCommuteDistanceSort0_1]
+FROM [dbo].[DimCustomer]
+)
+ AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Commute Distance Sort' completed. 6 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:46 PM; Duration: 0:00:41
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[dbo_DimCustomerCommuteDistanceSort0_0] AS [dbo_DimCustomerCommuteDistanceSort0_0]
+FROM 
+(
+
+SELECT CASE 
+    WHEN CommuteDistance= '0-1 Miles'  THEN 
+        '1'
+    WHEN CommuteDistance= '1-2 Miles'  THEN 
+        '2'
+    WHEN CommuteDistance= '2-5 Miles'  THEN 
+        '3'
+    WHEN CommuteDistance= '5-10 Miles' THEN 
+        '4'
+    WHEN CommuteDistance= '10+ Miles'  THEN 
+        '5'
+END   AS [dbo_DimCustomerCommuteDistanceSort0_0]
+FROM [dbo].[DimCustomer]
+)
+ AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Country' completed. 7 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[EnglishCountryRegionName] AS [dbo_DimGeographyEnglishCountryRegionName0_0],[dbo_DimGeography].[SpanishCountryRegionName] AS [dbo_DimGeographySpanishCountryRegionName0_1],[dbo_DimGeography].[FrenchCountryRegionName] AS [dbo_DimGeographyFrenchCountryRegionName0_2]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+		Processing Dimension Attribute 'Customer' completed. 18485 rows have been read.
+			Start time: 10/06/2018 7:39:11 PM; End time: 10/06/2018 7:39:23 PM; Duration: 0:00:11
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[dbo_DimCustomerCustomerKey0_0] AS [dbo_DimCustomerCustomerKey0_0],[dbo_DimCustomer].[dbo_DimCustomerFullName0_1] AS [dbo_DimCustomerFullName0_1],[dbo_DimCustomer].[dbo_DimCustomerDateFirstPurchase0_2] AS [dbo_DimCustomerDateFirstPurchase0_2],[dbo_DimCustomer].[dbo_DimCustomerPhone0_3] AS [dbo_DimCustomerPhone0_3],[dbo_DimCustomer].[dbo_DimCustomerNumberCarsOwned0_4] AS [dbo_DimCustomerNumberCarsOwned0_4],[dbo_DimCustomer].[dbo_DimCustomerEnglishOccupation0_5] AS [dbo_DimCustomerEnglishOccupation0_5],[dbo_DimCustomer].[dbo_DimCustomerEnglishEducation0_6] AS [dbo_DimCustomerEnglishEducation0_6],[dbo_DimCustomer].[dbo_DimCustomerNumberChildrenAtHome0_7] AS [dbo_DimCustomerNumberChildrenAtHome0_7],[dbo_DimCustomer].[dbo_DimCustomerTotalChildren0_8] AS [dbo_DimCustomerTotalChildren0_8],[dbo_DimCustomer].[dbo_DimCustomerYearlyIncome0_9] AS [dbo_DimCustomerYearlyIncome0_9],[dbo_DimCustomer].[dbo_DimCustomerEmailAddress0_10] AS [dbo_DimCustomerEmailAddress0_10],[dbo_DimCustomer].[dbo_DimCustomerBirthDate0_11] AS [dbo_DimCustomerBirthDate0_11],[dbo_DimCustomer].[dbo_DimCustomerMaritalStatus0_12] AS [dbo_DimCustomerMaritalStatus0_12],[dbo_DimCustomer].[dbo_DimCustomerGender0_13] AS [dbo_DimCustomerGender0_13],[dbo_DimCustomer].[dbo_DimCustomerHouseOwnerFlag0_14] AS [dbo_DimCustomerHouseOwnerFlag0_14],[dbo_DimCustomer].[dbo_DimCustomerCommuteDistance0_15] AS [dbo_DimCustomerCommuteDistance0_15],[dbo_DimCustomer].[dbo_DimCustomerAddressLine10_16] AS [dbo_DimCustomerAddressLine10_16],[dbo_DimGeography].[PostalCode] AS [dbo_DimGeographyPostalCode1_0],[dbo_DimGeography].[City] AS [dbo_DimGeographyCity1_1],[dbo_DimGeography].[StateProvinceCode] AS [dbo_DimGeographyStateProvinceCode1_2]
+FROM 
+(
+
+SELECT [CustomerKey] AS [dbo_DimCustomerCustomerKey0_0],CASE 
+    WHEN MiddleName IS NULL THEN 
+        FirstName + ' ' + LastName
+    ELSE 
+        FirstName + ' ' + MiddleName + '.' + ' ' + LastName
+END   AS [dbo_DimCustomerFullName0_1],[DateFirstPurchase] AS [dbo_DimCustomerDateFirstPurchase0_2],[Phone] AS [dbo_DimCustomerPhone0_3],[NumberCarsOwned] AS [dbo_DimCustomerNumberCarsOwned0_4],[EnglishOccupation] AS [dbo_DimCustomerEnglishOccupation0_5],[EnglishEducation] AS [dbo_DimCustomerEnglishEducation0_6],[NumberChildrenAtHome] AS [dbo_DimCustomerNumberChildrenAtHome0_7],[TotalChildren] AS [dbo_DimCustomerTotalChildren0_8],[YearlyIncome] AS [dbo_DimCustomerYearlyIncome0_9],[EmailAddress] AS [dbo_DimCustomerEmailAddress0_10],[BirthDate] AS [dbo_DimCustomerBirthDate0_11],[MaritalStatus] AS [dbo_DimCustomerMaritalStatus0_12],[Gender] AS [dbo_DimCustomerGender0_13],[HouseOwnerFlag] AS [dbo_DimCustomerHouseOwnerFlag0_14],[CommuteDistance] AS [dbo_DimCustomerCommuteDistance0_15],[AddressLine1] AS [dbo_DimCustomerAddressLine10_16],[GeographyKey] AS [dbo_DimCustomerGeographyKey0_17]
+FROM [dbo].[DimCustomer]
+)
+ AS [dbo_DimCustomer],[dbo].[DimGeography] AS [dbo_DimGeography]
+WHERE 
+(
+
+(
+[dbo_DimCustomer].[dbo_DimCustomerGeographyKey0_17] = [dbo_DimGeography].[GeographyKey]
+)
+
+)
+		Processing Hierarchy 'Customer Geography' completed.
+			Start time: 10/06/2018 7:39:23 PM; End time: 10/06/2018 7:39:24 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Date of First Purchase' completed. 1125 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:13 PM; Duration: 0:00:08
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[dbo_DimCustomerDateFirstPurchase0_0] AS [dbo_DimCustomerDateFirstPurchase0_0],[dbo_DimCustomer].[dbo_DimCustomerSimpleDateFirstPurchase0_1] AS [dbo_DimCustomerSimpleDateFirstPurchase0_1]
+FROM 
+(
+
+SELECT [DateFirstPurchase] AS [dbo_DimCustomerDateFirstPurchase0_0],DATENAME(mm, DateFirstPurchase) + ' ' +
+DATENAME(dd, DateFirstPurchase) + ', ' +
+DATENAME(yy, DateFirstPurchase)   AS [dbo_DimCustomerSimpleDateFirstPurchase0_1]
+FROM [dbo].[DimCustomer]
+)
+ AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Education' completed. 6 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:34 PM; Duration: 0:00:29
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[EnglishEducation] AS [dbo_DimCustomerEnglishEducation0_0],[dbo_DimCustomer].[SpanishEducation] AS [dbo_DimCustomerSpanishEducation0_1],[dbo_DimCustomer].[FrenchEducation] AS [dbo_DimCustomerFrenchEducation0_2]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Email Address' completed. 18485 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:55 PM; Duration: 0:00:50
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[EmailAddress] AS [dbo_DimCustomerEmailAddress0_0]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Gender' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:34 PM; Duration: 0:00:29
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[dbo_DimCustomerGender0_0] AS [dbo_DimCustomerGender0_0],[dbo_DimCustomer].[dbo_DimCustomerGenderDesc0_1] AS [dbo_DimCustomerGenderDesc0_1]
+FROM 
+(
+
+SELECT [Gender] AS [dbo_DimCustomerGender0_0],CASE 
+    WHEN Gender = 'M' THEN 
+        'Male'
+    ELSE 
+        'Female'
+END   AS [dbo_DimCustomerGenderDesc0_1]
+FROM [dbo].[DimCustomer]
+)
+ AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Home Owner' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:41 PM; Duration: 0:00:35
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[dbo_DimCustomerHouseOwnerFlag0_0] AS [dbo_DimCustomerHouseOwnerFlag0_0],[dbo_DimCustomer].[dbo_DimCustomerHouseOwnerDesc0_1] AS [dbo_DimCustomerHouseOwnerDesc0_1]
+FROM 
+(
+
+SELECT [HouseOwnerFlag] AS [dbo_DimCustomerHouseOwnerFlag0_0],CASE 
+    WHEN HouseOwnerFlag = '1' THEN 
+        'Yes'
+    ELSE 
+        'No'
+END   AS [dbo_DimCustomerHouseOwnerDesc0_1]
+FROM [dbo].[DimCustomer]
+)
+ AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Marital Status' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:37 PM; Duration: 0:00:32
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[dbo_DimCustomerMaritalStatus0_0] AS [dbo_DimCustomerMaritalStatus0_0],[dbo_DimCustomer].[dbo_DimCustomerMaritalStatusDesc0_1] AS [dbo_DimCustomerMaritalStatusDesc0_1]
+FROM 
+(
+
+SELECT [MaritalStatus] AS [dbo_DimCustomerMaritalStatus0_0],CASE 
+    WHEN MaritalStatus = 'S' THEN 
+        'Single'
+    ELSE 
+        'Married'
+END   AS [dbo_DimCustomerMaritalStatusDesc0_1]
+FROM [dbo].[DimCustomer]
+)
+ AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Number of Cars Owned' completed. 6 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:16 PM; Duration: 0:00:10
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[NumberCarsOwned] AS [dbo_DimCustomerNumberCarsOwned0_0]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Number of Children At Home' completed. 7 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:34 PM; Duration: 0:00:29
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[NumberChildrenAtHome] AS [dbo_DimCustomerNumberChildrenAtHome0_0]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Occupation' completed. 6 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:37 PM; Duration: 0:00:32
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[EnglishOccupation] AS [dbo_DimCustomerEnglishOccupation0_0],[dbo_DimCustomer].[SpanishOccupation] AS [dbo_DimCustomerSpanishOccupation0_1],[dbo_DimCustomer].[FrenchOccupation] AS [dbo_DimCustomerFrenchOccupation0_2]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Phone' completed. 8891 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:36 PM; Duration: 0:00:30
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[Phone] AS [dbo_DimCustomerPhone0_0]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Postal Code' completed. 656 rows have been read.
+			Start time: 10/06/2018 7:39:00 PM; End time: 10/06/2018 7:39:01 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[PostalCode] AS [dbo_DimGeographyPostalCode0_0],[dbo_DimGeography].[City] AS [dbo_DimGeographyCity0_1],[dbo_DimGeography].[StateProvinceCode] AS [dbo_DimGeographyStateProvinceCode0_2]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+		Processing Dimension Attribute 'State-Province' completed. 72 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:59 PM; Duration: 0:00:54
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[StateProvinceCode] AS [dbo_DimGeographyStateProvinceCode0_0],[dbo_DimGeography].[CountryRegionCode] AS [dbo_DimGeographyCountryRegionCode0_1],[dbo_DimGeography].[StateProvinceName] AS [dbo_DimGeographyStateProvinceName0_2],[dbo_DimGeography].[EnglishCountryRegionName] AS [dbo_DimGeographyEnglishCountryRegionName0_3]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+		Processing Dimension Attribute 'Total Children' completed. 7 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:16 PM; Duration: 0:00:10
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimCustomer].[TotalChildren] AS [dbo_DimCustomerTotalChildren0_0]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+		Processing Dimension Attribute 'Yearly Income' completed. 18484 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:09 PM; Duration: 0:00:04
+			SQL queries 
+				SELECT [dbo_DimCustomer].[YearlyIncome] AS [dbo_DimCustomerYearlyIncome0_0]
+FROM [dbo].[DimCustomer] AS [dbo_DimCustomer]
+	Processing Cube 'Customer Clusters ~MC' failed.
+		Start time: 10/06/2018 7:40:10 PM; End time: 10/06/2018 7:40:11 PM; Duration: 0:00:01
+		Processing Measure Group '~CaseDetail ~MG' failed.
+			Start time: 10/06/2018 7:40:10 PM; End time: 10/06/2018 7:40:11 PM; Duration: 0:00:00
+			Processing Partition '~CaseDetail ~MG' failed.
+				Start time: 10/06/2018 7:40:10 PM; End time: 10/06/2018 7:40:11 PM; Duration: 0:00:00
+				Error Messages 1
+					OLE DB error: OLE DB or ODBC error: MdxScript(Adventure Works) (320, 8) The level '&[2005-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2005-07-01T00:00:00], was parsed.; MdxScript(Adventure Works) (328, 8) The level '&[2006-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2006-07-01T00:00:00], was parsed.; MdxScript(Adventure Works) (336, 8) The level '&[2007-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2007-07-01T00:00:00], was parsed.; One or more errors were encountered in the MDX script..
+				SQL queries 
+					SELECT  DATAID ( [Adventure Works].[$Customer].[Customer] )
+  AS [tomer0_0], KEY ( [Adventure Works].[$Customer].[Number of Cars Owned],0 )
+  AS [tomer0_1], KEY ( [Adventure Works].[$Customer].[Number of Children At Home],0 )
+  AS [tomer0_2], KEY ( [Adventure Works].[$Customer].[Total Children],0 )
+  AS [tomer0_3]
+   FROM [Adventure Works].[$Customer]
+  GROUP BY [tomer0_0],[tomer0_1],[tomer0_2],[tomer0_3],[tomer0_0]
+  ORDER BY  DATAID ( [Adventure Works].[$Customer].[Customer] )
+ 
+  ASC
+		Processing Measure Group 'Internet ~1 ~MG' failed.
+			Start time: 10/06/2018 7:40:10 PM; End time: 10/06/2018 7:40:11 PM; Duration: 0:00:00
+			Processing Partition 'Internet ~1 ~MG' failed.
+				Start time: 10/06/2018 7:40:10 PM; End time: 10/06/2018 7:40:11 PM; Duration: 0:00:00
+				Error Messages 1
+					OLE DB error: OLE DB or ODBC error: MdxScript(Adventure Works) (320, 8) The level '&[2005-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2005-07-01T00:00:00], was parsed.; MdxScript(Adventure Works) (328, 8) The level '&[2006-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2006-07-01T00:00:00], was parsed.; MdxScript(Adventure Works) (336, 8) The level '&[2007-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2007-07-01T00:00:00], was parsed.; One or more errors were encountered in the MDX script..
+				SQL queries 
+					SELECT  DATAID ( [Adventure Works].[Internet Sales].[$Customer.Customer] )
+  AS [Sales0_0], AGGREGATE ( [Adventure Works].[Internet Sales].[Internet Sales Amount] )
+  AS [Sales0_1], DATAID ( [Adventure Works].[Internet Sales].[$Product.Subcategory] )
+  AS [Sales0_2]
+   FROM [Adventure Works].[Internet Sales]
+  GROUP BY [Sales0_0],[Sales0_0],[Sales0_2]
+  ORDER BY  DATAID ( [Adventure Works].[Internet Sales].[$Customer.Customer] )
+ 
+  ASC
+	Processing Mining Structure 'Customer Mining' completed.
+		Start time: 10/06/2018 7:40:10 PM; End time: 10/06/2018 7:40:11 PM; Duration: 0:00:01
+	Processing Dimension 'Date' completed.
+		Start time: 10/06/2018 7:38:02 PM; End time: 10/06/2018 7:39:03 PM; Duration: 0:01:00
+		Processing Dimension Attribute '(All)' completed.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:03 PM; Duration: 0:00:00
+		Processing Hierarchy 'Calendar' completed.
+			Start time: 10/06/2018 7:39:02 PM; End time: 10/06/2018 7:39:02 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Calendar Quarter' completed. 41 rows have been read.
+			Start time: 10/06/2018 7:38:59 PM; End time: 10/06/2018 7:39:00 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeCalendarYear0_0] AS [dbo_DimTimeCalendarYear0_0],[dbo_DimTime].[dbo_DimTimeCalendarQuarter0_1] AS [dbo_DimTimeCalendarQuarter0_1],[dbo_DimTime].[dbo_DimTimeCalendarQuarterDesc0_2] AS [dbo_DimTimeCalendarQuarterDesc0_2],[dbo_DimTime].[dbo_DimTimeFiscalYear0_3] AS [dbo_DimTimeFiscalYear0_3],[dbo_DimTime].[dbo_DimTimeFiscalQuarter0_4] AS [dbo_DimTimeFiscalQuarter0_4],[dbo_DimTime].[dbo_DimTimeCalendarSemester0_5] AS [dbo_DimTimeCalendarSemester0_5],[dbo_DimTime].[dbo_DimTimeCalendarSemesterOfYear0_6] AS [dbo_DimTimeCalendarSemesterOfYear0_6],[dbo_DimTime].[dbo_DimTimeCalendarQuarterOfYear0_7] AS [dbo_DimTimeCalendarQuarterOfYear0_7]
+FROM 
+(
+
+SELECT [CalendarYear] AS [dbo_DimTimeCalendarYear0_0],[CalendarQuarter] AS [dbo_DimTimeCalendarQuarter0_1],'Q' + CONVERT(CHAR (1), CalendarQuarter) +
+' CY ' + 
+CONVERT(CHAR (4), CalendarYear)   AS [dbo_DimTimeCalendarQuarterDesc0_2],[FiscalYear] AS [dbo_DimTimeFiscalYear0_3],[FiscalQuarter] AS [dbo_DimTimeFiscalQuarter0_4],[CalendarSemester] AS [dbo_DimTimeCalendarSemester0_5],CASE
+    WHEN CalendarSemester = 1 
+    THEN 'CY H1'
+    ELSE  'CY H2'
+END   AS [dbo_DimTimeCalendarSemesterOfYear0_6],'CY Q' + CONVERT(CHAR (1), CalendarQuarter)   AS [dbo_DimTimeCalendarQuarterOfYear0_7]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Calendar Quarter of Year' completed. 5 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeCalendarQuarterOfYear0_0] AS [dbo_DimTimeCalendarQuarterOfYear0_0]
+FROM 
+(
+
+SELECT 'CY Q' + CONVERT(CHAR (1), CalendarQuarter)   AS [dbo_DimTimeCalendarQuarterOfYear0_0]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Calendar Semester' completed. 21 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeCalendarYear0_0] AS [dbo_DimTimeCalendarYear0_0],[dbo_DimTime].[dbo_DimTimeCalendarSemester0_1] AS [dbo_DimTimeCalendarSemester0_1],[dbo_DimTime].[dbo_DimTimeCalendarSemesterDesc0_2] AS [dbo_DimTimeCalendarSemesterDesc0_2]
+FROM 
+(
+
+SELECT [CalendarYear] AS [dbo_DimTimeCalendarYear0_0],[CalendarSemester] AS [dbo_DimTimeCalendarSemester0_1],CASE
+    WHEN CalendarSemester = 1 
+    THEN 'H1 '+'CY ' + CONVERT(CHAR (4), CalendarYear)
+    ELSE 'H2 '+ 'CY '+ CONVERT(CHAR (4), CalendarYear)
+END   AS [dbo_DimTimeCalendarSemesterDesc0_2]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Calendar Semester of Year' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeCalendarSemesterOfYear0_0] AS [dbo_DimTimeCalendarSemesterOfYear0_0]
+FROM 
+(
+
+SELECT CASE
+    WHEN CalendarSemester = 1 
+    THEN 'CY H1'
+    ELSE  'CY H2'
+END   AS [dbo_DimTimeCalendarSemesterOfYear0_0]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Calendar Week' completed. 531 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:06 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeWeekNumberOfYear0_0] AS [dbo_DimTimeWeekNumberOfYear0_0],[dbo_DimTime].[dbo_DimTimeCalendarYear0_1] AS [dbo_DimTimeCalendarYear0_1],[dbo_DimTime].[dbo_DimTimeCalendarWeekDesc0_2] AS [dbo_DimTimeCalendarWeekDesc0_2]
+FROM 
+(
+
+SELECT [WeekNumberOfYear] AS [dbo_DimTimeWeekNumberOfYear0_0],[CalendarYear] AS [dbo_DimTimeCalendarYear0_1],'Week ' +  CONVERT(CHAR(2), WeekNumberOfYear) + 
+' CY ' +  CONVERT(CHAR (4), CalendarYear)   AS [dbo_DimTimeCalendarWeekDesc0_2]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Calendar Week of Year' completed. 54 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:02
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeWeekNumberOfYear0_0] AS [dbo_DimTimeWeekNumberOfYear0_0],[dbo_DimTime].[dbo_DimTimeCalendarWeek0_1] AS [dbo_DimTimeCalendarWeek0_1]
+FROM 
+(
+
+SELECT [WeekNumberOfYear] AS [dbo_DimTimeWeekNumberOfYear0_0],'CY Week ' +  CONVERT(CHAR(2), WeekNumberOfYear)   AS [dbo_DimTimeCalendarWeek0_1]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Hierarchy 'Calendar Weeks' completed.
+			Start time: 10/06/2018 7:39:02 PM; End time: 10/06/2018 7:39:02 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Calendar Year' completed. 11 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeCalendarYear0_0] AS [dbo_DimTimeCalendarYear0_0],[dbo_DimTime].[dbo_DimTimeCalendarYearDesc0_1] AS [dbo_DimTimeCalendarYearDesc0_1]
+FROM 
+(
+
+SELECT [CalendarYear] AS [dbo_DimTimeCalendarYear0_0],'CY '+ CONVERT(CHAR (4), CalendarYear)   AS [dbo_DimTimeCalendarYearDesc0_1]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Date' completed. 3653 rows have been read.
+			Start time: 10/06/2018 7:39:01 PM; End time: 10/06/2018 7:39:02 PM; Duration: 0:00:00
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeDateKey0_0] AS [dbo_DimTimeDateKey0_0],[dbo_DimTime].[dbo_DimTimeSimpleDate0_1] AS [dbo_DimTimeSimpleDate0_1],[dbo_DimTime].[dbo_DimTimeFullDateAlternateKey0_2] AS [dbo_DimTimeFullDateAlternateKey0_2],[dbo_DimTime].[dbo_DimTimeDayNumberOfWeek0_3] AS [dbo_DimTimeDayNumberOfWeek0_3],[dbo_DimTime].[dbo_DimTimeDayNumberOfMonth0_4] AS [dbo_DimTimeDayNumberOfMonth0_4],[dbo_DimTime].[dbo_DimTimeDayNumberOfYear0_5] AS [dbo_DimTimeDayNumberOfYear0_5],[dbo_DimTime].[dbo_DimTimeWeekNumberOfYear0_6] AS [dbo_DimTimeWeekNumberOfYear0_6],[dbo_DimTime].[dbo_DimTimeCalendarYear0_7] AS [dbo_DimTimeCalendarYear0_7],[dbo_DimTime].[dbo_DimTimeMonthNumberOfYear0_8] AS [dbo_DimTimeMonthNumberOfYear0_8],[dbo_DimTime].[dbo_DimTimeFiscalWeekNumberOfYear0_9] AS [dbo_DimTimeFiscalWeekNumberOfYear0_9],[dbo_DimTime].[dbo_DimTimeFiscalYear0_10] AS [dbo_DimTimeFiscalYear0_10]
+FROM 
+(
+
+SELECT [DateKey] AS [dbo_DimTimeDateKey0_0],DATENAME(mm, FullDateAlternateKey) + ' ' +
+DATENAME(dd, FullDateAlternateKey) + ', ' +
+DATENAME(yy, FullDateAlternateKey)   AS [dbo_DimTimeSimpleDate0_1],[FullDateAlternateKey] AS [dbo_DimTimeFullDateAlternateKey0_2],[DayNumberOfWeek] AS [dbo_DimTimeDayNumberOfWeek0_3],[DayNumberOfMonth] AS [dbo_DimTimeDayNumberOfMonth0_4],[DayNumberOfYear] AS [dbo_DimTimeDayNumberOfYear0_5],[WeekNumberOfYear] AS [dbo_DimTimeWeekNumberOfYear0_6],[CalendarYear] AS [dbo_DimTimeCalendarYear0_7],[MonthNumberOfYear] AS [dbo_DimTimeMonthNumberOfYear0_8],CASE 
+    WHEN WeekNumberOfYear< 27 
+       THEN 
+           WeekNumberOfYear + 27
+       ELSE 
+           WeekNumberOfYear - 26
+END   AS [dbo_DimTimeFiscalWeekNumberOfYear0_9],[FiscalYear] AS [dbo_DimTimeFiscalYear0_10]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Day Name' completed. 8 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[DayNumberOfWeek] AS [dbo_DimTimeDayNumberOfWeek0_0],[dbo_DimTime].[EnglishDayNameOfWeek] AS [dbo_DimTimeEnglishDayNameOfWeek0_1],[dbo_DimTime].[SpanishDayNameOfWeek] AS [dbo_DimTimeSpanishDayNameOfWeek0_2],[dbo_DimTime].[FrenchDayNameOfWeek] AS [dbo_DimTimeFrenchDayNameOfWeek0_3]
+FROM [dbo].[DimDate] AS [dbo_DimTime]
+		Processing Dimension Attribute 'Day of Month' completed. 32 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[DayNumberOfMonth] AS [dbo_DimTimeDayNumberOfMonth0_0]
+FROM [dbo].[DimDate] AS [dbo_DimTime]
+		Processing Dimension Attribute 'Day of Week' completed. 8 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:02
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[DayNumberOfWeek] AS [dbo_DimTimeDayNumberOfWeek0_0]
+FROM [dbo].[DimDate] AS [dbo_DimTime]
+		Processing Dimension Attribute 'Day of Year' completed. 367 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[DayNumberOfYear] AS [dbo_DimTimeDayNumberOfYear0_0]
+FROM [dbo].[DimDate] AS [dbo_DimTime]
+		Processing Hierarchy 'Fiscal' completed.
+			Start time: 10/06/2018 7:39:02 PM; End time: 10/06/2018 7:39:02 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Fiscal Quarter' completed. 37 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:59 PM; Duration: 0:00:54
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeFiscalYear0_0] AS [dbo_DimTimeFiscalYear0_0],[dbo_DimTime].[dbo_DimTimeFiscalQuarter0_1] AS [dbo_DimTimeFiscalQuarter0_1],[dbo_DimTime].[dbo_DimTimeFiscalQuarterDesc0_2] AS [dbo_DimTimeFiscalQuarterDesc0_2],[dbo_DimTime].[dbo_DimTimeFiscalSemester0_3] AS [dbo_DimTimeFiscalSemester0_3],[dbo_DimTime].[dbo_DimTimeFiscalSemesterOfYear0_4] AS [dbo_DimTimeFiscalSemesterOfYear0_4],[dbo_DimTime].[dbo_DimTimeFiscalQuarterOfYear0_5] AS [dbo_DimTimeFiscalQuarterOfYear0_5]
+FROM 
+(
+
+SELECT [FiscalYear] AS [dbo_DimTimeFiscalYear0_0],[FiscalQuarter] AS [dbo_DimTimeFiscalQuarter0_1],'Q' + CONVERT(CHAR (1), FiscalQuarter) +
+' FY ' +
+CONVERT(CHAR (4), FiscalYear)   AS [dbo_DimTimeFiscalQuarterDesc0_2],[FiscalSemester] AS [dbo_DimTimeFiscalSemester0_3],CASE
+    WHEN FiscalSemester = 1 
+    THEN 'FY H1'
+    ELSE  'FY H2'
+END   AS [dbo_DimTimeFiscalSemesterOfYear0_4],'FY Q' + CONVERT(CHAR (1), FiscalQuarter)   AS [dbo_DimTimeFiscalQuarterOfYear0_5]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Fiscal Quarter of Year' completed. 5 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeFiscalQuarterOfYear0_0] AS [dbo_DimTimeFiscalQuarterOfYear0_0]
+FROM 
+(
+
+SELECT 'FY Q' + CONVERT(CHAR (1), FiscalQuarter)   AS [dbo_DimTimeFiscalQuarterOfYear0_0]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Fiscal Semester' completed. 19 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeFiscalYear0_0] AS [dbo_DimTimeFiscalYear0_0],[dbo_DimTime].[dbo_DimTimeFiscalSemester0_1] AS [dbo_DimTimeFiscalSemester0_1],[dbo_DimTime].[dbo_DimTimeFiscalSemesterDesc0_2] AS [dbo_DimTimeFiscalSemesterDesc0_2]
+FROM 
+(
+
+SELECT [FiscalYear] AS [dbo_DimTimeFiscalYear0_0],[FiscalSemester] AS [dbo_DimTimeFiscalSemester0_1],CASE
+    WHEN FiscalSemester = 1 
+    THEN 'H1 '+'FY '+ CONVERT(CHAR (4), FiscalYear)
+    ELSE  'H2 '+'FY '+ CONVERT(CHAR (4), FiscalYear)
+END   AS [dbo_DimTimeFiscalSemesterDesc0_2]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Fiscal Semester of Year' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeFiscalSemesterOfYear0_0] AS [dbo_DimTimeFiscalSemesterOfYear0_0]
+FROM 
+(
+
+SELECT CASE
+    WHEN FiscalSemester = 1 
+    THEN 'FY H1'
+    ELSE  'FY H2'
+END   AS [dbo_DimTimeFiscalSemesterOfYear0_0]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Fiscal Week' completed. 479 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeFiscalWeekNumberOfYear0_0] AS [dbo_DimTimeFiscalWeekNumberOfYear0_0],[dbo_DimTime].[dbo_DimTimeFiscalYear0_1] AS [dbo_DimTimeFiscalYear0_1],[dbo_DimTime].[dbo_DimTimeFiscalWeekDesc0_2] AS [dbo_DimTimeFiscalWeekDesc0_2]
+FROM 
+(
+
+SELECT CASE 
+    WHEN WeekNumberOfYear< 27 
+       THEN 
+           WeekNumberOfYear + 27
+       ELSE 
+           WeekNumberOfYear - 26
+END   AS [dbo_DimTimeFiscalWeekNumberOfYear0_0],[FiscalYear] AS [dbo_DimTimeFiscalYear0_1],CASE 
+    WHEN WeekNumberOfYear< 27
+       THEN 
+           'Week ' + CONVERT(CHAR(2), WeekNumberOfYear + 27) + 
+           ' FY ' + CONVERT(CHAR (4), FiscalYear)
+       ELSE 
+           'Week ' + CONVERT(CHAR(2), WeekNumberOfYear - 26) + 
+           ' FY ' + CONVERT(CHAR (4), FiscalYear)
+END   AS [dbo_DimTimeFiscalWeekDesc0_2]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Fiscal Week of Year' completed. 54 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeFiscalWeekNumberOfYear0_0] AS [dbo_DimTimeFiscalWeekNumberOfYear0_0],[dbo_DimTime].[dbo_DimTimeFiscalWeek0_1] AS [dbo_DimTimeFiscalWeek0_1]
+FROM 
+(
+
+SELECT CASE 
+    WHEN WeekNumberOfYear< 27 
+       THEN 
+           WeekNumberOfYear + 27
+       ELSE 
+           WeekNumberOfYear - 26
+END   AS [dbo_DimTimeFiscalWeekNumberOfYear0_0],CASE 
+    WHEN WeekNumberOfYear< 27 
+       THEN 
+           'FY Week ' + CONVERT(CHAR(2), WeekNumberOfYear + 27)
+       ELSE 
+           'FY Week ' + CONVERT(CHAR(2), WeekNumberOfYear - 26)
+END   AS [dbo_DimTimeFiscalWeek0_1]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Hierarchy 'Fiscal Weeks' completed.
+			Start time: 10/06/2018 7:39:02 PM; End time: 10/06/2018 7:39:02 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Fiscal Year' completed. 11 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeFiscalYear0_0] AS [dbo_DimTimeFiscalYear0_0],[dbo_DimTime].[dbo_DimTimeFiscalYearDesc0_1] AS [dbo_DimTimeFiscalYearDesc0_1]
+FROM 
+(
+
+SELECT [FiscalYear] AS [dbo_DimTimeFiscalYear0_0],'FY '+ CONVERT(CHAR (4), FiscalYear)   AS [dbo_DimTimeFiscalYearDesc0_1]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Month Name' completed. 121 rows have been read.
+			Start time: 10/06/2018 7:39:00 PM; End time: 10/06/2018 7:39:01 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[dbo_DimTimeCalendarYear0_0] AS [dbo_DimTimeCalendarYear0_0],[dbo_DimTime].[dbo_DimTimeMonthNumberOfYear0_1] AS [dbo_DimTimeMonthNumberOfYear0_1],[dbo_DimTime].[dbo_DimTimeMonthName0_2] AS [dbo_DimTimeMonthName0_2],[dbo_DimTime].[dbo_DimTimeMonthNameValue0_3] AS [dbo_DimTimeMonthNameValue0_3],[dbo_DimTime].[dbo_DimTimeCalendarQuarter0_4] AS [dbo_DimTimeCalendarQuarter0_4]
+FROM 
+(
+
+SELECT [CalendarYear] AS [dbo_DimTimeCalendarYear0_0],[MonthNumberOfYear] AS [dbo_DimTimeMonthNumberOfYear0_1],EnglishMonthName+' '+ CONVERT(CHAR (4), CalendarYear)   AS [dbo_DimTimeMonthName0_2],CAST(  
+           CONVERT( CHAR(2), MonthNumberOfYear) 
+           + '/ ' +  '1/' +
+           CONVERT(CHAR(4), CalendarYear) AS DATE
+         )   AS [dbo_DimTimeMonthNameValue0_3],[CalendarQuarter] AS [dbo_DimTimeCalendarQuarter0_4]
+FROM [dbo].[DimDate]
+)
+ AS [dbo_DimTime]
+		Processing Dimension Attribute 'Month of Year' completed. 13 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimTime].[MonthNumberOfYear] AS [dbo_DimTimeMonthNumberOfYear0_0],[dbo_DimTime].[EnglishMonthName] AS [dbo_DimTimeEnglishMonthName0_1],[dbo_DimTime].[SpanishMonthName] AS [dbo_DimTimeSpanishMonthName0_2],[dbo_DimTime].[FrenchMonthName] AS [dbo_DimTimeFrenchMonthName0_3]
+FROM [dbo].[DimDate] AS [dbo_DimTime]
+	Processing Dimension 'Department' completed.
+		Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:02
+		Processing Dimension Attribute '(All)' completed.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Department' completed. 8 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimDepartmentGroup].[DepartmentGroupKey] AS [dbo_DimDepartmentGroupDepartmentGroupKey0_0],[dbo_DimDepartmentGroup].[DepartmentGroupName] AS [dbo_DimDepartmentGroupDepartmentGroupName0_1],[dbo_DimDepartmentGroup].[ParentDepartmentGroupKey] AS [dbo_DimDepartmentGroupParentDepartmentGroupKey0_2]
+FROM [dbo].[DimDepartmentGroup] AS [dbo_DimDepartmentGroup]
+		Processing Hierarchy 'Departments' completed.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+	Processing Dimension 'Destination Currency' completed.
+		Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:34 PM; Duration: 0:00:31
+		Processing Dimension Attribute '(All)' completed.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:03 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Destination Currency' completed. 15 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[DimDestinationCurrency].[CurrencyName] AS [DimDestinationCurrencyCurrencyName0_0],[DimDestinationCurrency].[LCID] AS [DimDestinationCurrencyLCID0_1]
+FROM 
+(
+
+SELECT     CurrencyKey, CurrencyAlternateKey, CurrencyName, 
+                      CASE WHEN CurrencyAlternateKey = 'ARS' THEN '11274' WHEN CurrencyAlternateKey = 'AUD' THEN '3081' WHEN CurrencyAlternateKey = 'DEM' THEN
+                       '1031' WHEN CurrencyAlternateKey = 'GBP' THEN '2057' WHEN CurrencyAlternateKey = 'MXN' THEN '2058' WHEN CurrencyAlternateKey = 'CAD' THEN
+                       '4105' WHEN CurrencyAlternateKey = 'SAR' THEN '1025' WHEN CurrencyAlternateKey = 'EUR' THEN '2067' WHEN CurrencyAlternateKey = 'FRF' THEN
+                       '1036' WHEN CurrencyAlternateKey = 'BRL' THEN '1046' WHEN CurrencyAlternateKey = 'JPY' THEN '1041' WHEN CurrencyAlternateKey = 'CNY' THEN
+                       '2052' WHEN CurrencyAlternateKey = 'VEB' THEN '16394' WHEN CurrencyAlternateKey = 'USD' THEN '1033' END AS LCID
+FROM         dbo.DimCurrency
+WHERE     (CurrencyKey IN
+                          (SELECT DISTINCT CurrencyKey
+                            FROM          dbo.FactCurrencyRate))
+)
+ AS [DimDestinationCurrency]
+		Processing Dimension Attribute 'Destination Currency Code' completed. 15 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:34 PM; Duration: 0:00:29
+			SQL queries 1
+				SELECT 
+DISTINCT
+[DimDestinationCurrency].[CurrencyKey] AS [DimDestinationCurrencyCurrencyKey0_0],[DimDestinationCurrency].[CurrencyAlternateKey] AS [DimDestinationCurrencyCurrencyAlternateKey0_1],[DimDestinationCurrency].[CurrencyName] AS [DimDestinationCurrencyCurrencyName0_2]
+FROM 
+(
+
+SELECT     CurrencyKey, CurrencyAlternateKey, CurrencyName, 
+                      CASE WHEN CurrencyAlternateKey = 'ARS' THEN '11274' WHEN CurrencyAlternateKey = 'AUD' THEN '3081' WHEN CurrencyAlternateKey = 'DEM' THEN
+                       '1031' WHEN CurrencyAlternateKey = 'GBP' THEN '2057' WHEN CurrencyAlternateKey = 'MXN' THEN '2058' WHEN CurrencyAlternateKey = 'CAD' THEN
+                       '4105' WHEN CurrencyAlternateKey = 'SAR' THEN '1025' WHEN CurrencyAlternateKey = 'EUR' THEN '2067' WHEN CurrencyAlternateKey = 'FRF' THEN
+                       '1036' WHEN CurrencyAlternateKey = 'BRL' THEN '1046' WHEN CurrencyAlternateKey = 'JPY' THEN '1041' WHEN CurrencyAlternateKey = 'CNY' THEN
+                       '2052' WHEN CurrencyAlternateKey = 'VEB' THEN '16394' WHEN CurrencyAlternateKey = 'USD' THEN '1033' END AS LCID
+FROM         dbo.DimCurrency
+WHERE     (CurrencyKey IN
+                          (SELECT DISTINCT CurrencyKey
+                            FROM          dbo.FactCurrencyRate))
+)
+ AS [DimDestinationCurrency]
+		Processing Dimension Attribute 'Locale' completed. 15 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[DimDestinationCurrency].[LCID] AS [DimDestinationCurrencyLCID0_0]
+FROM 
+(
+
+SELECT     CurrencyKey, CurrencyAlternateKey, CurrencyName, 
+                      CASE WHEN CurrencyAlternateKey = 'ARS' THEN '11274' WHEN CurrencyAlternateKey = 'AUD' THEN '3081' WHEN CurrencyAlternateKey = 'DEM' THEN
+                       '1031' WHEN CurrencyAlternateKey = 'GBP' THEN '2057' WHEN CurrencyAlternateKey = 'MXN' THEN '2058' WHEN CurrencyAlternateKey = 'CAD' THEN
+                       '4105' WHEN CurrencyAlternateKey = 'SAR' THEN '1025' WHEN CurrencyAlternateKey = 'EUR' THEN '2067' WHEN CurrencyAlternateKey = 'FRF' THEN
+                       '1036' WHEN CurrencyAlternateKey = 'BRL' THEN '1046' WHEN CurrencyAlternateKey = 'JPY' THEN '1041' WHEN CurrencyAlternateKey = 'CNY' THEN
+                       '2052' WHEN CurrencyAlternateKey = 'VEB' THEN '16394' WHEN CurrencyAlternateKey = 'USD' THEN '1033' END AS LCID
+FROM         dbo.DimCurrency
+WHERE     (CurrencyKey IN
+                          (SELECT DISTINCT CurrencyKey
+                            FROM          dbo.FactCurrencyRate))
+)
+ AS [DimDestinationCurrency]
+	Processing Dimension 'Employee' completed.
+		Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:37 PM; Duration: 0:00:33
+		Processing Dimension Attribute '(All)' completed.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:03 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Base Rate' completed. 296 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT [dbo_DimEmployee].[BaseRate] AS [dbo_DimEmployeeBaseRate0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Birth Date' completed. 272 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[BirthDate] AS [dbo_DimEmployeeBirthDate0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Department Name' completed. 17 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[DepartmentName] AS [dbo_DimEmployeeDepartmentName0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Email Address' completed. 291 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[EmailAddress] AS [dbo_DimEmployeeEmailAddress0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Emergency Contact Name' completed. 291 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[EmergencyContactName] AS [dbo_DimEmployeeEmergencyContactName0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Emergency Contact Phone' completed. 289 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[EmergencyContactPhone] AS [dbo_DimEmployeeEmergencyContactPhone0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Employee' completed. 297 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:36 PM; Duration: 0:00:30
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeEmployeeKey0_0] AS [dbo_DimEmployeeEmployeeKey0_0],[dbo_DimEmployee].[dbo_DimEmployeeFullName0_1] AS [dbo_DimEmployeeFullName0_1],[dbo_DimEmployee].[dbo_DimEmployeeSalesPersonFlag0_2] AS [dbo_DimEmployeeSalesPersonFlag0_2],[dbo_DimEmployee].[dbo_DimEmployeeSickLeaveHours0_3] AS [dbo_DimEmployeeSickLeaveHours0_3],[dbo_DimEmployee].[dbo_DimEmployeeVacationHours0_4] AS [dbo_DimEmployeeVacationHours0_4],[dbo_DimEmployee].[dbo_DimEmployeeBaseRate0_5] AS [dbo_DimEmployeeBaseRate0_5],[dbo_DimEmployee].[dbo_DimEmployeePayFrequency0_6] AS [dbo_DimEmployeePayFrequency0_6],[dbo_DimEmployee].[dbo_DimEmployeeSalariedFlag0_7] AS [dbo_DimEmployeeSalariedFlag0_7],[dbo_DimEmployee].[dbo_DimEmployeeEmergencyContactPhone0_8] AS [dbo_DimEmployeeEmergencyContactPhone0_8],[dbo_DimEmployee].[dbo_DimEmployeeEmergencyContactName0_9] AS [dbo_DimEmployeeEmergencyContactName0_9],[dbo_DimEmployee].[dbo_DimEmployeePhone0_10] AS [dbo_DimEmployeePhone0_10],[dbo_DimEmployee].[dbo_DimEmployeeEmailAddress0_11] AS [dbo_DimEmployeeEmailAddress0_11],[dbo_DimEmployee].[dbo_DimEmployeeLoginID0_12] AS [dbo_DimEmployeeLoginID0_12],[dbo_DimEmployee].[dbo_DimEmployeeBirthDate0_13] AS [dbo_DimEmployeeBirthDate0_13],[dbo_DimEmployee].[dbo_DimEmployeeHireDate0_14] AS [dbo_DimEmployeeHireDate0_14],[dbo_DimEmployee].[dbo_DimEmployeeTitle0_15] AS [dbo_DimEmployeeTitle0_15],[dbo_DimEmployee].[dbo_DimEmployeeGender0_16] AS [dbo_DimEmployeeGender0_16],[dbo_DimEmployee].[dbo_DimEmployeeMaritalStatusDesc0_17] AS [dbo_DimEmployeeMaritalStatusDesc0_17],[dbo_DimEmployee].[dbo_DimEmployeeSalesTerritoryKey0_18] AS [dbo_DimEmployeeSalesTerritoryKey0_18],[dbo_DimEmployee].[dbo_DimEmployeeEmployeeNationalIDAlternateKey0_19] AS [dbo_DimEmployeeEmployeeNationalIDAlternateKey0_19],[dbo_DimEmployee].[dbo_DimEmployeeParentEmployeeNationalIDAlternateKey0_20] AS [dbo_DimEmployeeParentEmployeeNationalIDAlternateKey0_20],[dbo_DimEmployee].[dbo_DimEmployeeEmployeeStatus0_21] AS [dbo_DimEmployeeEmployeeStatus0_21],[dbo_DimEmployee].[dbo_DimEmployeeStartDate0_22] AS [dbo_DimEmployeeStartDate0_22],[dbo_DimEmployee].[dbo_DimEmployeeEndDate0_23] AS [dbo_DimEmployeeEndDate0_23],[dbo_DimEmployee].[dbo_DimEmployeeHireYear0_24] AS [dbo_DimEmployeeHireYear0_24],[dbo_DimEmployee].[dbo_DimEmployeeParentEmployeeKey0_25] AS [dbo_DimEmployeeParentEmployeeKey0_25]
+FROM 
+(
+
+SELECT [EmployeeKey] AS [dbo_DimEmployeeEmployeeKey0_0],CASE 
+    WHEN MiddleName IS NULL THEN 
+        FirstName + ' ' + LastName
+    ELSE 
+        FirstName + ' ' + MiddleName + '.' + ' ' + LastName
+END   AS [dbo_DimEmployeeFullName0_1],[SalesPersonFlag] AS [dbo_DimEmployeeSalesPersonFlag0_2],[SickLeaveHours] AS [dbo_DimEmployeeSickLeaveHours0_3],[VacationHours] AS [dbo_DimEmployeeVacationHours0_4],[BaseRate] AS [dbo_DimEmployeeBaseRate0_5],[PayFrequency] AS [dbo_DimEmployeePayFrequency0_6],[SalariedFlag] AS [dbo_DimEmployeeSalariedFlag0_7],[EmergencyContactPhone] AS [dbo_DimEmployeeEmergencyContactPhone0_8],[EmergencyContactName] AS [dbo_DimEmployeeEmergencyContactName0_9],[Phone] AS [dbo_DimEmployeePhone0_10],[EmailAddress] AS [dbo_DimEmployeeEmailAddress0_11],[LoginID] AS [dbo_DimEmployeeLoginID0_12],[BirthDate] AS [dbo_DimEmployeeBirthDate0_13],[HireDate] AS [dbo_DimEmployeeHireDate0_14],[Title] AS [dbo_DimEmployeeTitle0_15],[Gender] AS [dbo_DimEmployeeGender0_16],CASE 
+    WHEN MaritalStatus = 'S' THEN 
+        'Single'
+    ELSE 
+        'Married'
+END   AS [dbo_DimEmployeeMaritalStatusDesc0_17],[SalesTerritoryKey] AS [dbo_DimEmployeeSalesTerritoryKey0_18],[EmployeeNationalIDAlternateKey] AS [dbo_DimEmployeeEmployeeNationalIDAlternateKey0_19],[ParentEmployeeNationalIDAlternateKey] AS [dbo_DimEmployeeParentEmployeeNationalIDAlternateKey0_20],CASE
+    WHEN Status = 'Current' THEN 'Active'
+    ELSE 'Inactive'
+END   AS [dbo_DimEmployeeEmployeeStatus0_21],[StartDate] AS [dbo_DimEmployeeStartDate0_22],[EndDate] AS [dbo_DimEmployeeEndDate0_23],DATEPART(yy, HireDate)   AS [dbo_DimEmployeeHireYear0_24],[ParentEmployeeKey] AS [dbo_DimEmployeeParentEmployeeKey0_25]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Hierarchy 'Employee Department' completed.
+			Start time: 10/06/2018 7:38:36 PM; End time: 10/06/2018 7:38:36 PM; Duration: 0:00:00
+		Processing Hierarchy 'Employees' completed.
+			Start time: 10/06/2018 7:38:36 PM; End time: 10/06/2018 7:38:36 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'End Date' completed. 8 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeEndDate0_0] AS [dbo_DimEmployeeEndDate0_0],[dbo_DimEmployee].[dbo_DimEmployeeSimpleEndDate0_1] AS [dbo_DimEmployeeSimpleEndDate0_1]
+FROM 
+(
+
+SELECT [EndDate] AS [dbo_DimEmployeeEndDate0_0],CASE
+    WHEN EndDate IS NULL THEN 'Active'
+    ELSE
+ DATENAME(mm, EndDate) + ' ' +
+ DATENAME(dd, EndDate) + ', ' + 
+ DATENAME(yy, EndDate)
+END   AS [dbo_DimEmployeeSimpleEndDate0_1]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Gender' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeGender0_0] AS [dbo_DimEmployeeGender0_0],[dbo_DimEmployee].[dbo_DimEmployeeGenderDesc0_1] AS [dbo_DimEmployeeGenderDesc0_1]
+FROM 
+(
+
+SELECT [Gender] AS [dbo_DimEmployeeGender0_0],CASE 
+    WHEN Gender = 'M' THEN 
+        'Male'
+    ELSE 
+        'Female'
+END   AS [dbo_DimEmployeeGenderDesc0_1]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Hire Date' completed. 165 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeHireDate0_0] AS [dbo_DimEmployeeHireDate0_0],[dbo_DimEmployee].[dbo_DimEmployeeSimpleHireDate0_1] AS [dbo_DimEmployeeSimpleHireDate0_1]
+FROM 
+(
+
+SELECT [HireDate] AS [dbo_DimEmployeeHireDate0_0],DATENAME(mm, HireDate) + ' ' +
+DATENAME(dd, HireDate) + ', ' +
+DATENAME(yy, HireDate)   AS [dbo_DimEmployeeSimpleHireDate0_1]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Hire Year' completed. 8 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeHireYear0_0] AS [dbo_DimEmployeeHireYear0_0]
+FROM 
+(
+
+SELECT DATEPART(yy, HireDate)   AS [dbo_DimEmployeeHireYear0_0]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Login ID' completed. 291 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[LoginID] AS [dbo_DimEmployeeLoginID0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Manager SSN' completed. 2 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[ParentEmployeeNationalIDAlternateKey] AS [dbo_DimEmployeeParentEmployeeNationalIDAlternateKey0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Marital Status' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeMaritalStatusDesc0_0] AS [dbo_DimEmployeeMaritalStatusDesc0_0]
+FROM 
+(
+
+SELECT CASE 
+    WHEN MaritalStatus = 'S' THEN 
+        'Single'
+    ELSE 
+        'Married'
+END   AS [dbo_DimEmployeeMaritalStatusDesc0_0]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Pay Frequency' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeePayFrequency0_0] AS [dbo_DimEmployeePayFrequency0_0],[dbo_DimEmployee].[dbo_DimEmployeePayFrequencyDesc0_1] AS [dbo_DimEmployeePayFrequencyDesc0_1]
+FROM 
+(
+
+SELECT [PayFrequency] AS [dbo_DimEmployeePayFrequency0_0],CASE 
+    WHEN PayFrequency = '1' THEN 
+        'Monthly'
+    ELSE 
+        'Bi-Monthly'
+END   AS [dbo_DimEmployeePayFrequencyDesc0_1]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Phone' completed. 289 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[Phone] AS [dbo_DimEmployeePhone0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Salaried Flag' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeSalariedFlag0_0] AS [dbo_DimEmployeeSalariedFlag0_0],[dbo_DimEmployee].[dbo_DimEmployeeSalariedFlagDesc0_1] AS [dbo_DimEmployeeSalariedFlagDesc0_1]
+FROM 
+(
+
+SELECT [SalariedFlag] AS [dbo_DimEmployeeSalariedFlag0_0],Case
+    When SalariedFlag = 0
+    Then 'False'
+    Else 'True'
+End   AS [dbo_DimEmployeeSalariedFlagDesc0_1]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Sales Person Flag' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeSalesPersonFlag0_0] AS [dbo_DimEmployeeSalesPersonFlag0_0],[dbo_DimEmployee].[dbo_DimEmployeeSalesPersonFlagDesc0_1] AS [dbo_DimEmployeeSalesPersonFlagDesc0_1]
+FROM 
+(
+
+SELECT [SalesPersonFlag] AS [dbo_DimEmployeeSalesPersonFlag0_0],Case
+    When SalesPersonFlag = 0
+    Then 'False'
+    Else 'True'
+End   AS [dbo_DimEmployeeSalesPersonFlagDesc0_1]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Sales Territory Key' completed. 12 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[SalesTerritoryKey] AS [dbo_DimEmployeeSalesTerritoryKey0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Sick Leave Hours' completed. 296 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT [dbo_DimEmployee].[SickLeaveHours] AS [dbo_DimEmployeeSickLeaveHours0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'SSN' completed. 291 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[EmployeeNationalIDAlternateKey] AS [dbo_DimEmployeeEmployeeNationalIDAlternateKey0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Start Date' completed. 171 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeStartDate0_0] AS [dbo_DimEmployeeStartDate0_0],[dbo_DimEmployee].[dbo_DimEmployeeSimpleStartDate0_1] AS [dbo_DimEmployeeSimpleStartDate0_1]
+FROM 
+(
+
+SELECT [StartDate] AS [dbo_DimEmployeeStartDate0_0],DATENAME(mm, StartDate) + ' ' +
+DATENAME(dd, StartDate) + ', ' +
+DATENAME(yy, StartDate)   AS [dbo_DimEmployeeSimpleStartDate0_1]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Status' completed. 3 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[dbo_DimEmployeeEmployeeStatus0_0] AS [dbo_DimEmployeeEmployeeStatus0_0]
+FROM 
+(
+
+SELECT CASE
+    WHEN Status = 'Current' THEN 'Active'
+    ELSE 'Inactive'
+END   AS [dbo_DimEmployeeEmployeeStatus0_0]
+FROM [dbo].[DimEmployee]
+)
+ AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Title' completed. 68 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimEmployee].[Title] AS [dbo_DimEmployeeTitle0_0],[dbo_DimEmployee].[DepartmentName] AS [dbo_DimEmployeeDepartmentName0_1]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+		Processing Dimension Attribute 'Vacation Hours' completed. 296 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT [dbo_DimEmployee].[VacationHours] AS [dbo_DimEmployeeVacationHours0_0]
+FROM [dbo].[DimEmployee] AS [dbo_DimEmployee]
+	Processing Dimension 'Geography' completed.
+		Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:39:01 PM; Duration: 0:00:58
+		Processing Dimension Attribute '(All)' completed.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:03 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'City' completed. 588 rows have been read.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:59 PM; Duration: 0:00:54
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[City] AS [dbo_DimGeographyCity0_0],[dbo_DimGeography].[StateProvinceCode] AS [dbo_DimGeographyStateProvinceCode0_1],[dbo_DimGeography].[CountryRegionCode] AS [dbo_DimGeographyCountryRegionCode0_2]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+		Processing Dimension Attribute 'Country' completed. 7 rows have been read.
+			Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:01
+			SQL queries 1
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[EnglishCountryRegionName] AS [dbo_DimGeographyEnglishCountryRegionName0_0],[dbo_DimGeography].[SpanishCountryRegionName] AS [dbo_DimGeographySpanishCountryRegionName0_1],[dbo_DimGeography].[FrenchCountryRegionName] AS [dbo_DimGeographyFrenchCountryRegionName0_2]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+		Processing Hierarchy 'Geography' completed.
+			Start time: 10/06/2018 7:39:01 PM; End time: 10/06/2018 7:39:01 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Geography Key' completed. 656 rows have been read.
+			Start time: 10/06/2018 7:39:00 PM; End time: 10/06/2018 7:39:01 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[GeographyKey] AS [dbo_DimGeographyGeographyKey0_0],[dbo_DimGeography].[PostalCode] AS [dbo_DimGeographyPostalCode0_1],[dbo_DimGeography].[City] AS [dbo_DimGeographyCity0_2],[dbo_DimGeography].[StateProvinceCode] AS [dbo_DimGeographyStateProvinceCode0_3]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+		Processing Dimension Attribute 'Postal Code' completed. 656 rows have been read.
+			Start time: 10/06/2018 7:38:59 PM; End time: 10/06/2018 7:39:00 PM; Duration: 0:00:01
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[PostalCode] AS [dbo_DimGeographyPostalCode0_0],[dbo_DimGeography].[City] AS [dbo_DimGeographyCity0_1],[dbo_DimGeography].[StateProvinceCode] AS [dbo_DimGeographyStateProvinceCode0_2]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+		Processing Dimension Attribute 'State-Province' completed. 72 rows have been read.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+			SQL queries 
+				SELECT 
+DISTINCT
+[dbo_DimGeography].[StateProvinceCode] AS [dbo_DimGeographyStateProvinceCode0_0],[dbo_DimGeography].[CountryRegionCode] AS [dbo_DimGeographyCountryRegionCode0_1],[dbo_DimGeography].[StateProvinceName] AS [dbo_DimGeographyStateProvinceName0_2],[dbo_DimGeography].[EnglishCountryRegionName] AS [dbo_DimGeographyEnglishCountryRegionName0_3]
+FROM [dbo].[DimGeography] AS [dbo_DimGeography]
+	Processing Dimension 'Internet Sales Order Details' completed.
+		Start time: 10/06/2018 7:38:03 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:01
+		Processing Dimension Attribute '(All)' completed.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:04 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Internet Sales Order' completed.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+		Processing Hierarchy 'Internet Sales Orders' completed.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Sales Order Line' completed.
+			Start time: 10/06/2018 7:38:05 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+		Processing Dimension Attribute 'Sales Order Number' completed.
+			Start time: 10/06/2018 7:38:04 PM; End time: 10/06/2018 7:38:05 PM; Duration: 0:00:00
+Errors and Warnings from Response
+	Internal error: The operation terminated unsuccessfully.
+	OLE DB error: OLE DB or ODBC error: MdxScript(Adventure Works) (320, 8) The level '&[2005-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2005-07-01T00:00:00], was parsed.; MdxScript(Adventure Works) (328, 8) The level '&[2006-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2006-07-01T00:00:00], was parsed.; MdxScript(Adventure Works) (336, 8) The level '&[2007-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2007-07-01T00:00:00], was parsed.; One or more errors were encountered in the MDX script..
+	Errors in the OLAP storage engine: An error occurred while processing the 'Internet ~1 ~MG' partition of the 'Internet ~1 ~MG' measure group for the 'Customer Clusters ~MC' cube from the AdventureWorksDW2012Multidimensional-EE database.
+	Server: The current operation was cancelled because another operation in the transaction failed.
+	OLE DB error: OLE DB or ODBC error: MdxScript(Adventure Works) (320, 8) The level '&[2005-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2005-07-01T00:00:00], was parsed.; MdxScript(Adventure Works) (328, 8) The level '&[2006-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2006-07-01T00:00:00], was parsed.; MdxScript(Adventure Works) (336, 8) The level '&[2007-07-01T00:00:00]' object was not found in the cube when the string, [Product].[Start Date].&[2007-07-01T00:00:00], was parsed.; One or more errors were encountered in the MDX script..
+	Errors in the OLAP storage engine: An error occurred while processing the '~CaseDetail ~MG' partition of the '~CaseDetail ~MG' measure group for the 'Customer Clusters ~MC' cube from the AdventureWorksDW2012Multidimensional-EE database.
